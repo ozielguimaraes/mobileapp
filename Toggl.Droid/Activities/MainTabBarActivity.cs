@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reactive.Linq;
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
@@ -24,6 +25,8 @@ namespace Toggl.Droid.Activities
               ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
     public sealed partial class MainTabBarActivity : ReactiveActivity<MainTabBarViewModel>
     {
+        private const string currentTabResourceKey = "CurrentTab";
+
         private readonly Dictionary<int, Fragment> fragments = new Dictionary<int, Fragment>();
         private Fragment activeFragment;
         private bool activityResumedBefore = false;
@@ -38,11 +41,13 @@ namespace Toggl.Droid.Activities
             OverridePendingTransition(Resource.Animation.abc_fade_in, Resource.Animation.abc_fade_out);
 
             InitializeViews();
-            showInitialFragment();
 
-            navigationView
-                .Rx()
+            var previouslySelectedTab = savedInstanceState?.GetInt(currentTabResourceKey);
+            showInitialFragment(previouslySelectedTab);
+
+            navigationView.Rx()
                 .ItemSelected()
+                .Skip(1)
                 .Subscribe(onTabSelected)
                 .DisposedBy(DisposeBag);
         }
@@ -51,11 +56,18 @@ namespace Toggl.Droid.Activities
         {
             base.OnResume();
 
-            if (!activityResumedBefore)
-            {
-                navigationView.SelectedItemId = Resource.Id.MainTabTimerItem;
-                activityResumedBefore = true;
-            }
+            if (activityResumedBefore)
+                return;
+
+            navigationView.SelectedItemId = Resource.Id.MainTabTimerItem;
+            activityResumedBefore = true;
+        }
+
+        protected override void OnSaveInstanceState(Bundle outState)
+        {
+            base.OnSaveInstanceState(outState);
+
+            outState.PutInt(currentTabResourceKey, navigationView.SelectedItemId);
         }
 
         private Fragment getCachedFragment(int itemId)
@@ -133,19 +145,24 @@ namespace Toggl.Droid.Activities
             activeFragment = fragment;
         }
 
-        private void showInitialFragment()
+        private void showInitialFragment(int? previouslySelectedTabResource)
         {
             SupportFragmentManager.RemoveAllFragments();
 
-            var mainFragment = getCachedFragment(Resource.Id.MainTabTimerItem) as MainFragment;
+            var initialFragmentResource = previouslySelectedTabResource ?? Resource.Id.MainTabTimerItem;
+            var fragment = getCachedFragment(initialFragmentResource);
             SupportFragmentManager
                 .BeginTransaction()
-                .Add(Resource.Id.CurrentTabFragmmentContainer, mainFragment)
+                .Add(Resource.Id.CurrentTabFragmmentContainer, fragment)
                 .Commit();
 
-            mainFragment.SetFragmentIsVisible(true);
+            if (fragment is MainFragment mainFragment)
+            {
+                mainFragment.SetFragmentIsVisible(true);
+            }
 
-            activeFragment = mainFragment;
+            activeFragment = fragment;
+            navigationView.SelectedItemId = initialFragmentResource;
         }
 
         internal void ToggleReportsCalendarState(bool forceHide)
