@@ -93,9 +93,9 @@ namespace Toggl.Giskard.Activities
             layoutManager.InitialPrefetchItemCount = 5;
             tagsRecycler.SetLayoutManager(layoutManager);
             // tagsAdapter is initialized with the activity, even before running the Activity's constructor
-            tagsRecycler.SetAdapter(tagsAdapter); 
+            tagsRecycler.SetAdapter(tagsAdapter);
 
-            // ViewModel.IsEditingGroup is non-nullable.
+            // ViewModel.IsEditingGroup can throw NRE only if Prepare on the viewmodel hasn't been called by this time.
             deleteLabel.Text = ViewModel.IsEditingGroup
                 ? string.Format(TextResources.DeleteNTimeEntries, ViewModel.GroupCount)
                 : TextResources.DeleteThisEntry;
