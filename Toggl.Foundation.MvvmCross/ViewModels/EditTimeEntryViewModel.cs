@@ -31,6 +31,7 @@ namespace Toggl.Foundation.MvvmCross.ViewModels
     public sealed class EditTimeEntryViewModel : MvxViewModel<long[]>
     {
         internal static readonly int MaxTagLength = 30;
+        private const string reloadParameterName = "TimeEntryIds";
 
         private readonly ITimeService timeService;
         private readonly ITogglDataSource dataSource;
@@ -245,6 +246,23 @@ namespace Toggl.Foundation.MvvmCross.ViewModels
                 throw new ArgumentException("Edit view has no Time Entries to edit.");
 
             TimeEntryIds = parameter;
+        }
+
+        protected override void ReloadFromBundle(IMvxBundle state)
+        {
+            base.ReloadFromBundle(state);
+
+            TimeEntryIds = state.Data[reloadParameterName]
+                .Split(',')
+                .Select(v => long.Parse(v))
+                .ToArray();
+        }
+
+        protected override void SaveStateToBundle(IMvxBundle state)
+        {
+            base.SaveStateToBundle(state);
+
+            state.Data[reloadParameterName] = string.Join(",", TimeEntryIds);
         }
 
         public override async Task Initialize()
