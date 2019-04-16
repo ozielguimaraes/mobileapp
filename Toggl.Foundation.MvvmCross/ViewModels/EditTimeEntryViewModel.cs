@@ -31,7 +31,6 @@ namespace Toggl.Foundation.MvvmCross.ViewModels
     public sealed class EditTimeEntryViewModel : MvxViewModel<long[]>
     {
         internal static readonly int MaxTagLength = 30;
-        private const string reloadParameterName = "TimeEntryIds";
 
         private readonly ITimeService timeService;
         private readonly ITogglDataSource dataSource;
