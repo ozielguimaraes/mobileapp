@@ -21,6 +21,7 @@ using TimeEntryExtensions = Toggl.Giskard.Extensions.TimeEntryExtensions;
 using TextResources = Toggl.Foundation.Resources;
 using TagsAdapter = Toggl.Giskard.Adapters.SimpleAdapter<string>;
 using static Toggl.Giskard.Resource.String;
+using Android.Runtime;
 
 namespace Toggl.Giskard.Activities
 {
@@ -31,6 +32,14 @@ namespace Toggl.Giskard.Activities
     public sealed partial class EditTimeEntryActivity : ReactiveActivity<EditTimeEntryViewModel>
     {
         private readonly TagsAdapter tagsAdapter = new TagsAdapter(Resource.Layout.EditTimeEntryTagCell, StringViewHolder.Create);
+
+        public EditTimeEntryActivity()
+        {
+        }
+
+        public EditTimeEntryActivity(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
+        {
+        }
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -75,15 +84,11 @@ namespace Toggl.Giskard.Activities
 
         private void setupViews()
         {
-            // ViewModel.IsEditingGroup can throw NRE only if Prepare on the viewmodel hasn't been called by this time.
             singleTimeEntryModeViews.Visibility = (!ViewModel.IsEditingGroup).ToVisibility();
             timeEntriesGroupModeViews.Visibility = ViewModel.IsEditingGroup.ToVisibility();
 
-            // ViewModel.Description has a value since the creation of the viewmodel.
             descriptionEditText.Text = ViewModel.Description.Value;
 
-            // ViewModel.GroupCount can throw NRE only if Prepare on the viewmodel hasn't been called by this time.
-            // string.Format can only throw FormatException or ArgumentNullException.
             groupCountTextView.Text = string.Format(
                 TextResources.EditingTimeEntryGroup,
                 ViewModel.GroupCount);
@@ -92,10 +97,8 @@ namespace Toggl.Giskard.Activities
             layoutManager.ItemPrefetchEnabled = true;
             layoutManager.InitialPrefetchItemCount = 5;
             tagsRecycler.SetLayoutManager(layoutManager);
-            // tagsAdapter is initialized with the activity, even before running the Activity's constructor
             tagsRecycler.SetAdapter(tagsAdapter);
 
-            // ViewModel.IsEditingGroup can throw NRE only if Prepare on the viewmodel hasn't been called by this time.
             deleteLabel.Text = ViewModel.IsEditingGroup
                 ? string.Format(TextResources.DeleteNTimeEntries, ViewModel.GroupCount)
                 : TextResources.DeleteThisEntry;

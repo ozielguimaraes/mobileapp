@@ -3,6 +3,7 @@ using System.Reactive.Disposables;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Runtime;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Droid.Support.V7.AppCompat.EventSource;
 using MvvmCross.Platforms.Android.Binding.BindingContext;
@@ -46,6 +47,10 @@ namespace Toggl.Giskard.Activities
         {
             BindingContext = new MvxAndroidBindingContext(this, this);
             this.AddEventListeners();
+        }
+
+        protected ReactiveActivity(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
+        {
         }
 
         protected override void OnCreate(Bundle bundle)

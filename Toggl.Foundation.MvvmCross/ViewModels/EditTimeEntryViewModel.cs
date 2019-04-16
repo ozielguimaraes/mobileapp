@@ -248,23 +248,6 @@ namespace Toggl.Foundation.MvvmCross.ViewModels
             TimeEntryIds = parameter;
         }
 
-        protected override void ReloadFromBundle(IMvxBundle state)
-        {
-            base.ReloadFromBundle(state);
-
-            TimeEntryIds = state.Data[reloadParameterName]
-                .Split(',')
-                .Select(v => long.Parse(v))
-                .ToArray();
-        }
-
-        protected override void SaveStateToBundle(IMvxBundle state)
-        {
-            base.SaveStateToBundle(state);
-
-            state.Data[reloadParameterName] = string.Join(",", TimeEntryIds);
-        }
-
         public override async Task Initialize()
         {
             stopwatchFromCalendar = stopwatchProvider.Get(MeasuredOperation.EditTimeEntryFromCalendar);
