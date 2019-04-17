@@ -20,6 +20,7 @@
     <EnableProguard>true</EnableProguard>
     <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <AndroidAotAdditionalArguments>llvmopts="-data-layout='e-p:32:32-n32-S64' -O2 -disable-tail-calls"</AndroidAotAdditionalArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,6 +31,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidSupportedAbis>arm64-v8a;armeabi-v7a;x86;x86_64</AndroidSupportedAbis>
+    <AndroidAotAdditionalArguments>llvmopts="-data-layout='e-p:32:32-n32-S64' -O2 -disable-tail-calls"</AndroidAotAdditionalArguments>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
     <AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>
   </PropertyGroup>
@@ -37,6 +39,7 @@
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     <AndroidSupportedAbis>armeabi-v7a;x86_64;x86;arm64-v8a</AndroidSupportedAbis>
+    <AndroidAotAdditionalArguments>llvmopts="-data-layout='e-p:32:32-n32-S64' -O2 -disable-tail-calls"</AndroidAotAdditionalArguments>
     <DebugType>
     </DebugType>
     <OutputPath>..\bin</OutputPath>
@@ -59,6 +62,7 @@
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     <AndroidSupportedAbis>armeabi-v7a;x86_64;x86;arm64-v8a</AndroidSupportedAbis>
+    <AndroidAotAdditionalArguments>llvmopts="-data-layout='e-p:32:32-n32-S64' -O2 -disable-tail-calls"</AndroidAotAdditionalArguments>
     <DebugType>
     </DebugType>
     <DefineConstants>USE_ANALYTICS;USE_PRODUCTION_API</DefineConstants>
