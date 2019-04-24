@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
@@ -31,6 +32,9 @@ namespace Toggl.Droid.Adapters
         private readonly Subject<TItem> itemTapSubject = new Subject<TItem>();
         private readonly Subject<TSection> headerTapSubject = new Subject<TSection>();
 
+        private readonly Subject<Unit> itemsUpdateCompletedSubject = new Subject<Unit>();
+        public IObservable<Unit> ItemsUpdateCompleted { get; }
+
         private IList<SectionModel<TSection, TItem>> items;
         public IList<SectionModel<TSection, TItem>> Items
         {
@@ -48,6 +52,7 @@ namespace Toggl.Droid.Adapters
         protected BaseSectionedRecyclerAdapter()
         {
             HasStableIds = false;
+            ItemsUpdateCompleted = itemsUpdateCompletedSubject.AsObservable();
         }
 
         protected BaseSectionedRecyclerAdapter(IntPtr javaReference, JniHandleOwnership transfer)
@@ -174,6 +179,7 @@ namespace Toggl.Droid.Adapters
         {
             currentItems = newItems;
             diffResult.DispatchUpdatesTo(this);
+            itemsUpdateCompletedSubject.OnNext(Unit.Default);
             lock (updateLock)
             {
                 if (nextUpdate != null)

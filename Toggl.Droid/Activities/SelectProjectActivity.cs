@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive;
 using System.Reactive.Linq;
 using Android.App;
 using Android.Content.PM;
@@ -34,6 +35,10 @@ namespace Toggl.Droid.Activities
                 .Subscribe(adapter.Rx().Items())
                 .DisposedBy(DisposeBag);
 
+            adapter.ItemsUpdateCompleted
+                .Subscribe(scrollToTop)
+                .DisposedBy(DisposeBag);
+
             adapter.ItemTapObservable
                 .Subscribe(ViewModel.SelectProject.Inputs)
                 .DisposedBy(DisposeBag);
@@ -53,6 +58,11 @@ namespace Toggl.Droid.Activities
             closeButton.Rx()
                 .BindAction(ViewModel.Close)
                 .DisposedBy(DisposeBag);
+        }
+
+        private void scrollToTop(Unit _)
+        {
+            recyclerView.GetLayoutManager().ScrollToPosition(0);
         }
 
         public override void Finish()
