@@ -4,7 +4,7 @@ Toggl uses the built-in mechanism for localization using `Resources.resx` file. 
 
 When dealing with UI strings, we have to follow the process described below:
 
-## ☀️ Daneel
+## ☀️ iOS
 
 ### 💻 For programatically built views
 

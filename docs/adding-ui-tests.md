@@ -71,10 +71,10 @@ In the example above, the following will happen:
 Extensions are usually platform independent and located at `Toggl.Tests.UI/Extensions`, but sometimes you'll need to write an extension that behaves differently on iOS and Android. 
 The suggested way of writing extensions for that case is to create one extension in Android and another in iOS.
 All you have to do is to add the same extension in Android and iOS, but with different implementations.
-You'll add the Android version on: `Toggl.Droid.Tests.UI/Extensions` and the iOS version on `Toggl.Daneel.Tests.UI/Extensions`.
+You'll add the Android version on: `Toggl.Droid.Tests.UI/Extensions` and the iOS version on `Toggl.iOS.Tests.UI/Extensions`.
 Ex:
 
-For iOS, in `Toggl.Daneel.Tests.UI/Extensions`:
+For iOS, in `Toggl.iOS.Tests.UI/Extensions`:
 
 ```cs
 namespace Toggl.Tests.UI.Extensions
@@ -140,5 +140,5 @@ public sealed class AmazingScreenTests
 And of course, you can use `WaitForSomethingThatBehavesDifferentlyOnEachPlat` inside other extensions.
 
 ### Avoid breaking the ui build in the other platform
-When writing new tests, if you are doing so in only one platform, remember to add whatever constants you add to `Toggl.Daneel.Tests.UI/IosAccessibilityNames.cs` to `Toggl.Giskard.Tests.UI/AndroidAccessibilityNames.cs` and vice versa.
+When writing new tests, if you are doing so in only one platform, remember to add whatever constants you add to `Toggl.iOS.Tests.UI/IosAccessibilityNames.cs` to `Toggl.Droid.Tests.UI/AndroidAccessibilityNames.cs` and vice versa.
 The tests will break in the other platform if you forget to do so. 

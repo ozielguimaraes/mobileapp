@@ -360,7 +360,7 @@ public interface IFooService
     void Bar();
 }
 
-//In Daneel
+//In iOS
 public class FooServiceIos : IFooService
 {
     public void Bar() { }
