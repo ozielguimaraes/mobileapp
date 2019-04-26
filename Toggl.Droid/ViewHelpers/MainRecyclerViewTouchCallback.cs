@@ -3,6 +3,7 @@ using Android.Graphics;
 using Android.Runtime;
 using Android.Support.V7.Widget;
 using Android.Support.V7.Widget.Helper;
+using Android.Views;
 using Toggl.Droid.Adapters;
 using Toggl.Droid.ViewHolders;
 
@@ -90,10 +91,29 @@ namespace Toggl.Droid.ViewHelpers
             if (viewHolder is MainLogCellViewHolder logViewHolder)
             {
                 DefaultUIUtil.ClearView(logViewHolder.MainLogContentView);
+                logViewHolder.ItemView.ImportantForAccessibility = ImportantForAccessibility.Auto;
             }
             else
             {
                 base.ClearView(recyclerView, viewHolder);
+            }
+
+            resetViewsImportantForAccessibilityStatus(recyclerView);
+        }
+
+        private void resetViewsImportantForAccessibilityStatus(RecyclerView recyclerView)
+        {
+            var lm = recyclerView.GetLayoutManager();
+            if (lm is null) return;
+            var childCount = lm.ChildCount;
+
+            for (var layoutIndex = 0; layoutIndex < childCount; layoutIndex++)
+            {
+                var child = recyclerView.FindViewHolderForLayoutPosition(layoutIndex);
+                if (child == null || child.ItemView.ImportantForAccessibility == ImportantForAccessibility.Auto) 
+                    continue;
+
+                child.ItemView.ImportantForAccessibility = ImportantForAccessibility.Auto;
             }
         }
     }
