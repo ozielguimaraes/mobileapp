@@ -21,6 +21,9 @@ using Toggl.Core.UI.ViewModels.Calendar;
 using Toggl.Core.UI.ViewModels.Reports;
 using Toggl.Core.Services;
 using Toggl.Core.Shortcuts;
+using Toggl.iOS.ExtensionKit;
+using Toggl.iOS.ExtensionKit.Extensions;
+using Toggl.iOS.ExtensionKit.Models;
 using Toggl.iOS.Extensions;
 using Toggl.iOS.Intents;
 using Toggl.iOS.Services;
@@ -183,30 +186,36 @@ namespace Toggl.iOS
             UIApplicationRestorationHandler completionHandler)
         {
             var interaction = userActivity.GetInteraction();
-            if (interaction == null || interaction.IntentHandlingStatus != INIntentHandlingStatus.DeferredToApplication)
-            {
-                return false;
-            }
 
             var intent = interaction?.Intent;
 
             switch (intent)
             {
-                case StopTimerIntent _:
+                case StopTimerIntent _
+                    when interaction.IntentHandlingStatus == INIntentHandlingStatus.DeferredToApplication:
                     navigationService.Navigate(ApplicationUrls.Main.StopFromSiri);
                     return true;
-                case ShowReportIntent _:
+                case ShowReportIntent _
+                    when interaction.IntentHandlingStatus == INIntentHandlingStatus.DeferredToApplication:
                     navigationService.Navigate(ApplicationUrls.Reports);
                     return true;
-                case ShowReportPeriodIntent periodIntent:
-                    var tabbarVC = (MainTabBarController)UIApplication.SharedApplication.KeyWindow.RootViewController;
-                    var reportViewModel = (ReportsViewModel)tabbarVC.ViewModel.Tabs.Single(viewModel => viewModel is ReportsViewModel);
+                case ShowReportPeriodIntent periodIntent
+                    when interaction.IntentHandlingStatus == INIntentHandlingStatus.DeferredToApplication:
+                    var tabbarVC = (MainTabBarController) UIApplication.SharedApplication.KeyWindow.RootViewController;
+                    var reportViewModel =
+                        (ReportsViewModel) tabbarVC.ViewModel.Tabs.Single(viewModel => viewModel is ReportsViewModel);
                     navigationService.Navigate(reportViewModel, periodIntent.Period.ToReportPeriod());
                     return true;
-                case StartTimerIntent startTimerIntent:
+                case StartTimerIntent startTimerIntent
+                    when interaction.IntentHandlingStatus == INIntentHandlingStatus.DeferredToApplication:
                     var timeEntryParams = createStartTimeEntryParameters(startTimerIntent);
                     navigationService.Navigate<MainViewModel>();
                     navigationService.Navigate<StartTimeEntryViewModel, StartTimeEntryParameters>(timeEntryParams);
+                    return true;
+                case StartTimerIntent _ when interaction.IntentHandlingStatus == INIntentHandlingStatus.Success &&
+                                             userActivity.ActivityType == Constants.ActivityTypeStartTimerSuccess:
+                    var te = userActivity.GetTimeEntry();
+                    Console.WriteLine($"Save me to the db {te}");
                     return true;
                 default:
                     return false;

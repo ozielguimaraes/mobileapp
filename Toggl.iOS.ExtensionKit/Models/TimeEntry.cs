@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using Toggl.Shared;
 using Toggl.Shared.Models;
 
 namespace Toggl.iOS.ExtensionKit.Models
 {
+    [Preserve(AllMembers = true)]
     public class TimeEntry : ITimeEntry
     {
         public long WorkspaceId { get; }
@@ -18,7 +21,8 @@ namespace Toggl.iOS.ExtensionKit.Models
         public long Id { get; }
         public DateTimeOffset? ServerDeletedAt { get; }
         public DateTimeOffset At { get; }
-
+        
+        [JsonConstructor]
         public TimeEntry(long workspaceId, long? projectId, long? taskId, bool billable, DateTimeOffset start, long? duration,
                          string description, IEnumerable<long> tagIds, long userId, long id, DateTimeOffset? serverDeletedAt, DateTimeOffset at)
         {
@@ -33,7 +37,7 @@ namespace Toggl.iOS.ExtensionKit.Models
             UserId = userId;
             Id = id;
             ServerDeletedAt = serverDeletedAt;
-            At = at;                
+            At = at;
         }
 
         public static TimeEntry from(ITimeEntry entry)

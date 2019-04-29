@@ -1,6 +1,7 @@
 ﻿using System;
 using Foundation;
 using Newtonsoft.Json;
+using Toggl.iOS.ExtensionKit.Models;
 using Toggl.Shared.Models;
 
 namespace Toggl.iOS.ExtensionKit.Extensions
@@ -32,7 +33,7 @@ namespace Toggl.iOS.ExtensionKit.Extensions
         public static ITimeEntry GetTimeEntry(this NSUserActivity userActivity)
         {
             var jsonString = (NSString) userActivity.UserInfo[timeEntryKey];
-            var te = JsonConvert.DeserializeObject<ITimeEntry>(jsonString);
+            var te = JsonConvert.DeserializeObject<TimeEntry>(jsonString);
             return te;
         }
     }
