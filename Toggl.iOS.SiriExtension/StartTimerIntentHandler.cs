@@ -3,10 +3,10 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using Foundation;
-using SiriExtension.Models;
 using Toggl.iOS.ExtensionKit;
 using Toggl.iOS.ExtensionKit.Analytics;
 using Toggl.iOS.ExtensionKit.Extensions;
+using Toggl.iOS.ExtensionKit.Models;
 using Toggl.iOS.Intents;
 using Toggl.Networking;
 

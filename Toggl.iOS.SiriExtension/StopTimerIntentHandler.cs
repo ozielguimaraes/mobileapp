@@ -9,11 +9,11 @@ using Toggl.Networking.Network;
 using Toggl.iOS.Intents;
 using Foundation;
 using Toggl.Shared.Models;
-using SiriExtension.Models;
 using SiriExtension.Exceptions;
 using Toggl.iOS.ExtensionKit;
 using Toggl.iOS.ExtensionKit.Analytics;
 using Toggl.iOS.ExtensionKit.Extensions;
+using Toggl.iOS.ExtensionKit.Models;
 
 namespace SiriExtension
 {
