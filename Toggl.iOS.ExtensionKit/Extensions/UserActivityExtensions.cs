@@ -1,5 +1,7 @@
 ﻿using System;
 using Foundation;
+using Newtonsoft.Json;
+using Toggl.Shared.Models;
 
 namespace Toggl.iOS.ExtensionKit.Extensions
 {
@@ -7,6 +9,7 @@ namespace Toggl.iOS.ExtensionKit.Extensions
     {
         private const string entryDescriptionKey = "entryDescriptionKey";
         private const string responseTextKey = "responseTextKey";
+        private const string timeEntryKey = "timeEntryKey";
 
         public static void SetEntryDescription(this NSUserActivity userActivity, string entryDescription)
             => userActivity.AddUserInfoEntries(new NSDictionary(entryDescriptionKey, entryDescription));
@@ -19,5 +22,18 @@ namespace Toggl.iOS.ExtensionKit.Extensions
 
         public static NSString GetResponseText(this NSUserActivity userActivity)
            => (NSString)userActivity.UserInfo[responseTextKey];
+
+        public static void SetTimeEntry(this NSUserActivity userActivity, ITimeEntry te)
+        {
+            var jsonString = JsonConvert.SerializeObject(te);
+            userActivity.AddUserInfoEntries(new NSDictionary(timeEntryKey, new NSString(jsonString)));
+        }
+
+        public static ITimeEntry GetTimeEntry(this NSUserActivity userActivity)
+        {
+            var jsonString = (NSString) userActivity.UserInfo[timeEntryKey];
+            var te = JsonConvert.DeserializeObject<ITimeEntry>(jsonString);
+            return te;
+        }
     }
 }
