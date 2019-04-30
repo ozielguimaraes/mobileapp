@@ -21,9 +21,9 @@ using Toggl.Core.UI.ViewModels.Calendar;
 using Toggl.Core.UI.ViewModels.Reports;
 using Toggl.Core.Services;
 using Toggl.Core.Shortcuts;
+using Toggl.Core.Sync;
 using Toggl.iOS.ExtensionKit;
 using Toggl.iOS.ExtensionKit.Extensions;
-using Toggl.iOS.ExtensionKit.Models;
 using Toggl.iOS.Extensions;
 using Toggl.iOS.Intents;
 using Toggl.iOS.Services;
@@ -215,7 +215,15 @@ namespace Toggl.iOS
                 case StartTimerIntent _ when interaction.IntentHandlingStatus == INIntentHandlingStatus.Success &&
                                              userActivity.ActivityType == Constants.ActivityTypeStartTimerSuccess:
                     var te = userActivity.GetTimeEntry();
-                    Console.WriteLine($"Save me to the db {te}");
+
+                    var progressObservable = IosDependencyContainer.Instance.SyncManager.ProgressObservable;
+                    Observable.Zip(progressObservable, progressObservable.Skip(1))
+                        .Where(progresses => progresses[0] == SyncProgress.Syncing && progresses[1] == SyncProgress.Synced)
+                        .Take(1)
+                        .Subscribe(progress =>
+                        {
+                            navigationService.Navigate<EditTimeEntryViewModel, long[]>(new[] {te.Id});
+                        });
                     return true;
                 default:
                     return false;
