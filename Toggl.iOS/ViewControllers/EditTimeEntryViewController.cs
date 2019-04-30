@@ -34,6 +34,7 @@ namespace Toggl.iOS.ViewControllers
 
         private ProjectTaskClientToAttributedString projectTaskClientToAttributedString;
         private TagsListToAttributedString tagsListToAttributedString;
+        private float keyboardHeight = 0;
 
         private const string boundsKey = "bounds";
 
@@ -362,8 +363,46 @@ namespace Toggl.iOS.ViewControllers
             {
                 PreferredContentSize = newSize;
                 PresentationController.ContainerViewWillLayoutSubviews();
+                adjustDistanceFromTop();
             }
             ScrollView.ScrollEnabled = ScrollViewContent.Bounds.Height > ScrollView.Bounds.Height;
+        }
+
+        private void adjustDistanceFromTop()
+        {
+            if (keyboardHeight > 0)
+            {
+                // this bit of code depends on the knowledge of the component tree:
+                // - description label is inside of a container view which is placed in a stack view
+                // - we want to know the vertical location of the container view in the whole view
+                // - we actually want to know the Y coordinate of the bottom of the container and make
+                //   sure we don't overaly it with the keyboard
+                var container = DescriptionTextView.Superview;
+                var absoluteLocation = View.ConvertPointFromView(container.Frame.Location, container.Superview);
+                var minimumVisibleContentHeight = View.Frame.Height - absoluteLocation.Y - container.Frame.Height;
+
+                var coveredByKeyboard = keyboardHeight - minimumVisibleContentHeight;
+
+                if (coveredByKeyboard < 0)
+                {
+                    return;
+                }
+
+                var safeAreaOffset = UIDevice.CurrentDevice.CheckSystemVersion(11, 0)
+                    ? Math.Max(UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Top, UIApplication.SharedApplication.StatusBarFrame.Height)
+                    : 0;
+                var distanceFromTop = Math.Max(safeAreaOffset, View.Frame.Y - coveredByKeyboard);
+
+                View.Frame = new CGRect(View.Frame.X, distanceFromTop, View.Frame.Width, View.Frame.Height);
+                UIView.Animate(Animation.Timings.EnterTiming, View.LayoutIfNeeded);
+            }
+            else
+            {
+                var distanceFromTop = UIScreen.MainScreen.Bounds.Height - View.Frame.Height;
+
+                View.Frame = new CGRect(View.Frame.X, distanceFromTop, View.Frame.Width, View.Frame.Height);
+                UIView.Animate(Animation.Timings.EnterTiming, View.LayoutIfNeeded);
+            }
         }
 
         protected override void Dispose(bool disposing)
@@ -382,38 +421,14 @@ namespace Toggl.iOS.ViewControllers
 
         protected override void KeyboardWillShow(object sender, UIKeyboardEventArgs e)
         {
-            // this bit of code depends on the knowledge of the component tree:
-            // - description label is inside of a container view which is placed in a stack view
-            // - we want to know the vertical location of the container view in the whole view
-            // - we actually want to know the Y coordinate of the bottom of the container and make
-            //   sure we don't overaly it with the keyboard
-            var container = DescriptionTextView.Superview;
-            var absoluteLocation = View.ConvertPointFromView(container.Frame.Location, container.Superview);
-            var minimumVisibleContentHeight = View.Frame.Height - absoluteLocation.Y - container.Frame.Height;
-
-            var coveredByKeyboard = e.FrameEnd.Height - minimumVisibleContentHeight;
-
-            if (coveredByKeyboard < 0)
-            {
-                return;
-            }
-
-            var safeAreaOffset = UIDevice.CurrentDevice.CheckSystemVersion(11, 0)
-                ? Math.Max(UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Top, UIApplication.SharedApplication.StatusBarFrame.Height)
-                : 0;
-            var distanceFromTop = Math.Max(safeAreaOffset, View.Frame.Y - coveredByKeyboard);
-
-            View.Frame = new CGRect(View.Frame.X, distanceFromTop, View.Frame.Width, View.Frame.Height);
-            UIView.Animate(Animation.Timings.EnterTiming, View.LayoutIfNeeded);
+            keyboardHeight = (float) e.FrameEnd.Height;
+            adjustDistanceFromTop();
         }
 
         protected override void KeyboardWillHide(object sender, UIKeyboardEventArgs e)
         {
-            var distanceFromTop = UIScreen.MainScreen.Bounds.Height - View.Frame.Height;
-
-            Console.WriteLine($"Resetting distance: {distanceFromTop}");
-            View.Frame = new CGRect(View.Frame.X, distanceFromTop, View.Frame.Width, View.Frame.Height);
-            UIView.Animate(Animation.Timings.EnterTiming, View.LayoutIfNeeded);
+            keyboardHeight = 0;
+            adjustDistanceFromTop();
         }
     }
 }
