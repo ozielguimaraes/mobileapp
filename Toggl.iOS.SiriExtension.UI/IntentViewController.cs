@@ -40,6 +40,13 @@ namespace Toggl.iOS.SiriExtension.UI
             ParagraphStyle = paragraphStyle
         };
 
+        static readonly UIStringAttributes grayedAttributes = new UIStringAttributes
+        {
+            Font = UIFont.SystemFontOfSize(15),
+            ForegroundColor = new UIColor(206f / 255f, 206f / 255f, 206f / 255f, 1),
+            ParagraphStyle = paragraphStyle
+        };
+
         protected IntentViewController(IntPtr handle) : base(handle)
         {
             // Note: this .ctor should not contain any initialization logic.
@@ -69,7 +76,6 @@ namespace Toggl.iOS.SiriExtension.UI
                     {
                         desiredSize = showMessage($"Start tracking {startTimerIntent.EntryDescription ?? "time"}?");
                     }
-
                     break;
                 case StartTimerFromClipboardIntent _:
                     var description = interaction.IntentResponse.UserActivity.GetResponseText();
@@ -183,8 +189,12 @@ namespace Toggl.iOS.SiriExtension.UI
         private CGSize showStopResponse(StopTimerIntentResponse response)
         {
             entryInfoView.TimeLabel.Text = secondsToString(response.EntryDuration.DoubleValue);
+            var isEntryDescriptionEmpty = string.IsNullOrEmpty(response.EntryDescription);
 
-            var attributedString = new NSMutableAttributedString(response.EntryDescription ?? "", boldAttributes);
+            var attributedString = new NSMutableAttributedString(
+                isEntryDescriptionEmpty ? "Add description" : response.EntryDescription ,
+                isEntryDescriptionEmpty ? grayedAttributes : boldAttributes
+                );
 
             var startTime = DateTimeOffset.FromUnixTimeSeconds(response.EntryStart.LongValue).ToLocalTime();
             var endTime = DateTimeOffset.FromUnixTimeSeconds(response.EntryStart.LongValue + response.EntryDuration.LongValue).ToLocalTime();
