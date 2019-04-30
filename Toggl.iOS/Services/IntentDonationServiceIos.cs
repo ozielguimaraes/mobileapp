@@ -58,22 +58,28 @@ namespace Toggl.iOS.Services
             if (!string.IsNullOrEmpty(timeEntry.Description))
             {
                 // If any of the tags or the project id were just created and haven't sync we ignore this action until the user repeats it
-                if (!(timeEntry.ProjectId is long projectId))
+                if (timeEntry.ProjectId < 0 || timeEntry.TagIds.Any(tagId => tagId < 0))
                 {
                     return;
                 }
 
-                if (projectId < 0 || timeEntry.TagIds.Any(tagId => tagId < 0))
+                if (timeEntry.ProjectId is long projectId)
                 {
-                    return;
+                    var project = await dataSource.Projects.GetById(projectId).FirstAsync();
+                    var projectINObject = new INObject(projectId.ToString(), project.Name);
+                    startTimerIntent.ProjectId = projectINObject;
+                    startTimerWithClipboardIntent.ProjectId = projectINObject;
                 }
-
-                var project = await dataSource.Projects.GetById(projectId).FirstAsync();
 
                 startTimerIntent.EntryDescription = timeEntry.Description;
-                startTimerIntent.ProjectId = startTimerWithClipboardIntent.ProjectId = new INObject(timeEntry.ProjectId.ToString(), project.Name);
-                startTimerIntent.Tags = startTimerWithClipboardIntent.Tags = timeEntry.TagIds.Select(tag => new INObject(tag.ToString(), tag.ToString())).ToArray();
-                startTimerIntent.Billable = startTimerWithClipboardIntent.Billable = new INObject(timeEntry.Billable.ToString(), timeEntry.Billable.ToString());
+
+                var tags = timeEntry.TagIds.Select(tag => new INObject(tag.ToString(), tag.ToString())).ToArray();
+                startTimerIntent.Tags = tags;
+                startTimerWithClipboardIntent.Tags = tags;
+
+                var billable = new INObject(timeEntry.Billable.ToString(), timeEntry.Billable.ToString());
+                startTimerIntent.Billable = billable;
+                startTimerWithClipboardIntent.Billable = billable;
                 startTimerIntent.SuggestedInvocationPhrase = $"Track {timeEntry.Description}";
 
                 // Relevant shortcut for the Siri Watch Face
