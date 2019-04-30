@@ -213,9 +213,10 @@ namespace Toggl.iOS
                     navigationService.Navigate<StartTimeEntryViewModel, StartTimeEntryParameters>(timeEntryParams);
                     return true;
                 case StartTimerIntent _ when interaction.IntentHandlingStatus == INIntentHandlingStatus.Success &&
-                                             userActivity.ActivityType == Constants.ActivityTypeStartTimerSuccess:
+                                             userActivity.ActivityType == Constants.ActivityTypeStartStopTimerSuccess:
+                case StopTimerIntent _ when interaction.IntentHandlingStatus == INIntentHandlingStatus.Success &&
+                                            userActivity.ActivityType == Constants.ActivityTypeStartStopTimerSuccess:
                     var te = userActivity.GetTimeEntry();
-
                     var progressObservable = IosDependencyContainer.Instance.SyncManager.ProgressObservable;
                     Observable.Zip(progressObservable, progressObservable.Skip(1))
                         .Where(progresses => progresses[0] == SyncProgress.Syncing && progresses[1] == SyncProgress.Synced)
@@ -229,6 +230,8 @@ namespace Toggl.iOS
                     return false;
             }
         }
+
+
 
         private StartTimeEntryParameters createStartTimeEntryParameters(StartTimerIntent intent)
         {

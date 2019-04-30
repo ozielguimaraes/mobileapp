@@ -75,7 +75,9 @@ namespace SiriExtension
                             );
                         response.EntryStart = stoppedTimeEntry.Start.ToUnixTimeSeconds();
                         response.EntryDuration = stoppedTimeEntry.Duration;
-
+                        var userActivity = new NSUserActivity(Constants.ActivityTypeStartStopTimerSuccess);
+                        userActivity.SetTimeEntry(stoppedTimeEntry);
+                        response.UserActivity = userActivity;
                         SharedStorage.instance.AddSiriTrackingEvent(SiriTrackingEvent.StopTimer());
 
                         completion(response);

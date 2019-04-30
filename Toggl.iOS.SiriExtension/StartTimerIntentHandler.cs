@@ -60,7 +60,7 @@ namespace SiriExtension
             {
                 SharedStorage.instance.SetNeedsSync(true);
                 SharedStorage.instance.AddSiriTrackingEvent(SiriTrackingEvent.StartTimer(te));
-                var userActivity = new NSUserActivity(Constants.ActivityTypeStartTimerSuccess);
+                var userActivity = new NSUserActivity(Constants.ActivityTypeStartStopTimerSuccess);
                 userActivity.SetTimeEntry(te);
                 var response = new StartTimerIntentResponse(StartTimerIntentResponseCode.Success, userActivity);
                 completion(response);
