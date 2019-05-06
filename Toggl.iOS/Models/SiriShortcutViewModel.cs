@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
-namespace Toggl.Core.UI.ViewModels.Settings
+namespace Toggl.iOS.Models
 {
-    public class SiriShortcutViewModel
+    public class SiriShortcut
     {
         public string Title { get; }
 
@@ -10,7 +10,7 @@ namespace Toggl.Core.UI.ViewModels.Settings
         public string InvocationPhrase { get; }
         public Dictionary<string, string> Parameters { get; }
 
-        public SiriShortcutViewModel(string title, string intentIdentifier = null, string invocationPhrase = null, Dictionary<string, string> parameters = null)
+        public SiriShortcut(string title, string intentIdentifier = null, string invocationPhrase = null, Dictionary<string, string> parameters = null)
         {
             Title = title;
             IntentIdentifier = intentIdentifier;

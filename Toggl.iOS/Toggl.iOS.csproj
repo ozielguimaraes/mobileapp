@@ -1333,6 +1333,7 @@
     <Compile Include="Extensions\Reactive\UISliderExtensions.cs" />
     <Compile Include="Extensions\Reactive\WheelForegroundViewExtensions.cs" />
     <Compile Include="Extensions\SectionedIndexExtensions.cs" />
+    <Compile Include="Models\SiriShortcutViewModel.cs" />
     <Compile Include="Services\PermissionsServiceIos.cs" />
     <Compile Include="Services\CalendarServiceIos.cs" />
     <Compile Include="Extensions\Reactive\NSConstraintExtensions.cs" />
@@ -1344,7 +1345,7 @@
     <Compile Include="Extensions\Reactive\UITableViewExtensions.cs" />
     <Compile Include="Extensions\Reactive\UITextViewExtensions.cs" />
     <Compile Include="Extensions\Reactive\UIViewExtensions.cs" />
-    <Compile Include="Services\IntentDonationServiceIos.cs" />
+    <Compile Include="Services\IntentDonationService.cs" />
     <Compile Include="Services\UserDefaultsStorageIos.cs" />
     <Compile Include="Startup\IosDependencyContainer.cs" />
     <Compile Include="Startup\IOSSchedulerProvider.cs" />

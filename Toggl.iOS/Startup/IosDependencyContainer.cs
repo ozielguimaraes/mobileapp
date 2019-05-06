@@ -47,7 +47,7 @@ namespace Toggl.iOS
             : base(environment, new UserAgent(platform.ToString(), version))
         {
             ViewPresenter = viewPresenter;
-            IntentDonationService = new IntentDonationServiceIos(AnalyticsService);
+            IntentDonationService = new IntentDonationService(AnalyticsService);
 
             var appVersion = Version.Parse(version);
 
