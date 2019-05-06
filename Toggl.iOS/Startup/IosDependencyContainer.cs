@@ -28,7 +28,7 @@ namespace Toggl.iOS
 
         public TogglPresenter ViewPresenter { get; }
         public INavigationService MvxNavigationService { get; internal set; }
-        public IIntentDonationService IntentDonationService { get; }
+        public IntentDonationService IntentDonationService { get; }
 
         public new static IosDependencyContainer Instance { get; private set; }
 

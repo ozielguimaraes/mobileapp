@@ -16,7 +16,7 @@ using UIKit;
 
 namespace Toggl.iOS.Services
 {
-    public class IntentDonationService : IIntentDonationService
+    public class IntentDonationService
     {
         private IAnalyticsService analyticsService;
 
