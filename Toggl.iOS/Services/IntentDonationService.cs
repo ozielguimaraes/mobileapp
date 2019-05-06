@@ -16,7 +16,7 @@ using UIKit;
 
 namespace Toggl.iOS.Services
 {
-    public class IntentDonationServiceIos : IIntentDonationService
+    public class IntentDonationService : IIntentDonationService
     {
         private IAnalyticsService analyticsService;
 
@@ -25,7 +25,7 @@ namespace Toggl.iOS.Services
             new INDailyRoutineRelevanceProvider(INDailyRoutineSituation.Gym),
             new INDailyRoutineRelevanceProvider(INDailyRoutineSituation.School)
         };
-        public IntentDonationServiceIos(IAnalyticsService analyticsService)
+        public IntentDonationService(IAnalyticsService analyticsService)
         {
             this.analyticsService = analyticsService;
         }
