@@ -405,6 +405,10 @@ namespace Toggl.Core.UI.Navigation
                     dependencyContainer.UserPreferences,
                     dependencyContainer.RxActionFactory);
 
+            if (viewModelType == typeof(SiriShortcutsViewModel))
+                return new SiriShortcutsViewModel(
+                    dependencyContainer.SchedulerProvider,
+                    dependencyContainer.RxActionFactory);
 
             throw new InvalidOperationException($"Trying to locate ViewModel {viewModelType.Name} failed.");
         }

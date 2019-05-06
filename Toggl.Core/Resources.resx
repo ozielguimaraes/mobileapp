@@ -935,4 +935,10 @@ Use them to add keywords to your time entries.</value>
   <data name="EditingTwentyFourHoursFormat">
     <value>HH:mm</value>
   </data>
+  <data name="Siri Shortcuts" xml:space="preserve">
+    <value>Siri Shortcuts</value>
+  </data>
+  <data name="Siri Shortcuts Description" xml:space="preserve">
+    <value>Add shortcuts to control Toggl with Siri and the Shortcuts app</value>
+  </data>  
 </root>

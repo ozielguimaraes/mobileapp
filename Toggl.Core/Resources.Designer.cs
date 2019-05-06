@@ -10,7 +10,6 @@
 
 namespace Toggl.Core {
     using System;
-    using System.Reflection;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
@@ -1652,6 +1651,18 @@ namespace Toggl.Core {
         public static string EditingTwentyFourHoursFormat {
             get {
                 return ResourceManager.GetString("EditingTwentyFourHoursFormat", resourceCulture);
+            }
+        }
+        
+        public static string Siri_Shortcuts {
+            get {
+                return ResourceManager.GetString("Siri Shortcuts", resourceCulture);
+            }
+        }
+        
+        public static string Siri_Shortcuts_Description {
+            get {
+                return ResourceManager.GetString("Siri Shortcuts Description", resourceCulture);
             }
         }
     }
