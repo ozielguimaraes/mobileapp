@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reactive.Linq;
 using Toggl.Core;
 using Toggl.Core.UI.Collections;
 using Toggl.Core.UI.ViewModels;
@@ -34,7 +37,10 @@ namespace Toggl.iOS.ViewControllers.Settings
             var tableViewSource = new SiriShortcutsTableViewSource(TableView);
 
             TableView.Source = tableViewSource;
-            ViewModel.Shortcuts
+
+            IosDependencyContainer.Instance.IntentDonationService.CurrentShortcuts
+                .Select(toSections)
+                .ObserveOn(new NSRunloopScheduler())
                 .Subscribe(TableView.Rx().ReloadSections(tableViewSource))
                 .DisposedBy(DisposeBag);
 
@@ -45,47 +51,50 @@ namespace Toggl.iOS.ViewControllers.Settings
             */
         }
 
-        private void generateShortcutList()
+        private IEnumerable<ShortcutSection> toSections(IEnumerable<SiriShortcut> shortcuts)
         {
-            var defaultShortcuts = new[]
+            var defaultShortcuts = SiriShortcut.TimerShortcuts.Concat(SiriShortcut.ReportsShortcuts);
+
+            var allShortcuts = defaultShortcuts.Concat(shortcuts)
+                .Aggregate(new List<SiriShortcut>(), (acc, shortcut) =>
+                {
+                    if (shortcut.Type != SiriShortcutType.CustomStart && shortcut.Type != SiriShortcutType.CustomReport)
+                    {
+                        var index = acc.IndexOf(s => shortcut.Type == s.Type);
+                        if (index != -1)
+                        {
+                            acc[index] = shortcut;
+                            return acc;
+                        }
+                    }
+
+                    acc.Add(shortcut);
+                    return acc;
+                });
+
+            return new[]
             {
                 new ShortcutSection(
                     "Timer shortcuts",
-                    new[]
-                    {
-                        new SiriShortcut(
-                            "Start empty timer"
-                        ),
-                        new SiriShortcut(
-                            "Stop running entry"
-                        ),
-                        new SiriShortcut(
-                            "Continue last entry"
-                        ),
-                        new SiriShortcut(
-                            "Start custom entry"
-                        ),
-                    }
+                    allShortcuts.Where(isTimerShortcut)
                 ),
                 new ShortcutSection(
                     "Reports shortcuts",
-                    new[]
-                    {
-                        new SiriShortcut(
-                            "Show reports"
-                        ),
-                        new SiriShortcut(
-                            "Show custom report"
-                        )
-                    }
+                    allShortcuts.Where(isReportsShortcut)
                 )
             };
         }
 
-        public override void DidReceiveMemoryWarning()
+        private bool isTimerShortcut(SiriShortcut shortcut)
         {
-            base.DidReceiveMemoryWarning();
-            // Release any cached data, images, etc that aren't in use.
+            return shortcut.Type == SiriShortcutType.Stop || shortcut.Type == SiriShortcutType.Start ||
+                   shortcut.Type == SiriShortcutType.Continue || shortcut.Type == SiriShortcutType.CustomStart ||
+                   shortcut.Type == SiriShortcutType.StartFromClipboard;
+        }
+
+        private bool isReportsShortcut(SiriShortcut shortcut)
+        {
+            return shortcut.Type == SiriShortcutType.ShowReport || shortcut.Type == SiriShortcutType.CustomReport;
         }
     }
 }

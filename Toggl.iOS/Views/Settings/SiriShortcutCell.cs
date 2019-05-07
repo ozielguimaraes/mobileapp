@@ -1,14 +1,17 @@
 ﻿using System;
 
 using Foundation;
+using Toggl.Core.UI.Helper;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Core.UI.ViewModels.Settings;
 using Toggl.iOS.Cells;
+using Toggl.iOS.Extensions;
+using Toggl.iOS.Models;
 using UIKit;
 
 namespace Toggl.iOS.Views.Settings
 {
-    public partial class SiriShortcutCell : BaseTableViewCell<SiriShortcutViewModel>
+    public partial class SiriShortcutCell : BaseTableViewCell<SiriShortcut>
     {
         public static readonly string Identifier = nameof(SiriShortcutCell);
         public static readonly UINib Nib;
@@ -27,7 +30,7 @@ namespace Toggl.iOS.Views.Settings
         {
             TitleLabel.Text = Item.Title;
             DetailLabel.Text = "Add";
-            Accessory = UITableViewCellAccessory.DisclosureIndicator;
+            DetailLabel.TextColor = Colors.Siri.AddButton.ToNativeColor();
         }
     }
 }
