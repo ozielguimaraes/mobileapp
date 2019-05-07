@@ -7,6 +7,7 @@ using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using Toggl.Core.Analytics;
 using Toggl.Core.DataSources;
+using Toggl.Core.Models;
 using Toggl.Core.Services;
 using Toggl.Core.UI.Parameters;
 using Toggl.Core.UI.Services;
