@@ -58,5 +58,56 @@ namespace Toggl.Shared.Tests
                     yield return new object[] { i };
             }
         }
+
+        public sealed class TheBeginningOfWeekMethod
+        {
+            [Theory, LogIfTooSlow]
+            [MemberData(nameof(TestData))]
+            public void ReturnsTheCorrectDate(
+                DateTimeOffset now, BeginningOfWeek beginningOfWeek, DateTimeOffset expectedResult)
+            {
+                now.BeginningOfWeek(beginningOfWeek).Should().Be(expectedResult);
+            }
+
+            public static IEnumerable<object[]> TestData =>
+            new List<object[]>
+            {
+                new object[] {
+                    new DateTimeOffset(2019, 4, 29, 13, 13, 13, TimeSpan.Zero),
+                    BeginningOfWeek.Monday,
+                    new DateTimeOffset(2019, 4, 29, 0, 0, 0, DateTimeOffset.Now.Offset),
+                },
+                new object[] {
+                    new DateTimeOffset(2019, 4, 29, 13, 13, 13, TimeSpan.Zero),
+                    BeginningOfWeek.Tuesday,
+                    new DateTimeOffset(2019, 4, 23, 0, 0, 0, DateTimeOffset.Now.Offset),
+                },
+                new object[] {
+                    new DateTimeOffset(2019, 4, 29, 13, 13, 13, TimeSpan.Zero),
+                    BeginningOfWeek.Wednesday,
+                    new DateTimeOffset(2019, 4, 24, 0, 0, 0, DateTimeOffset.Now.Offset),
+                },
+                new object[] {
+                    new DateTimeOffset(2019, 4, 29, 13, 13, 13, TimeSpan.Zero),
+                    BeginningOfWeek.Thursday,
+                    new DateTimeOffset(2019, 4, 25, 0, 0, 0, DateTimeOffset.Now.Offset),
+                },
+                new object[] {
+                    new DateTimeOffset(2019, 4, 29, 13, 13, 13, TimeSpan.Zero),
+                    BeginningOfWeek.Friday,
+                    new DateTimeOffset(2019, 4, 26, 0, 0, 0, DateTimeOffset.Now.Offset),
+                },
+                new object[] {
+                    new DateTimeOffset(2019, 4, 29, 13, 13, 13, TimeSpan.Zero),
+                    BeginningOfWeek.Saturday,
+                    new DateTimeOffset(2019, 4, 27, 0, 0, 0, DateTimeOffset.Now.Offset),
+                },
+                new object[] {
+                    new DateTimeOffset(2019, 4, 29, 13, 13, 13, TimeSpan.Zero),
+                    BeginningOfWeek.Sunday,
+                    new DateTimeOffset(2019, 4, 28, 0, 0, 0, DateTimeOffset.Now.Offset),
+                },
+            };
+        }
     }
 }

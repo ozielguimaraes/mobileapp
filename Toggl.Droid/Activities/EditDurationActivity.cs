@@ -183,10 +183,13 @@ namespace Toggl.Droid.Activities
                 .DisposedBy(DisposeBag);
 
             ViewModel.StartTime
+                .DistinctUntilChanged()
                 .Subscribe(v => wheelForeground.StartTime = v)
                 .DisposedBy(DisposeBag);
 
             ViewModel.StopTime
+                .Select(endTime => endTime.RoundDownToMinute())
+                .DistinctUntilChanged()
                 .Subscribe(v => wheelForeground.EndTime = v)
                 .DisposedBy(DisposeBag);
 

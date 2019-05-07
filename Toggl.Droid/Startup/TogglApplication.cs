@@ -18,7 +18,7 @@ namespace Toggl.Droid
         {
             base.OnCreate();
             Firebase.FirebaseApp.InitializeApp(this);
-#if USE_ANALYTICS
+#if USE_APPCENTER
             Microsoft.AppCenter.AppCenter.Start(
                 "{TOGGL_APP_CENTER_ID_DROID}",
                 typeof(Microsoft.AppCenter.Crashes.Crashes),

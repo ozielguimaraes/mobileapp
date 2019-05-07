@@ -55,7 +55,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release.AppStore|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release.AppStore</OutputPath>
-    <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;USE_PRODUCTION_API;USE_ANALYTICS</DefineConstants>
+    <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;USE_PRODUCTION_API;USE_ANALYTICS;USE_APPCENTER</DefineConstants>
     <WarningLevel>4</WarningLevel>
     <CodesignKey>iPhone Distribution: Toggl OU (B227VTMZ94)</CodesignKey>
     <MtouchExtraArgs>--linkskip Toggl.iOS</MtouchExtraArgs>
@@ -73,8 +73,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release.AdHoc|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release.AdHoc</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
+    <DefineConstants>USE_APPCENTER</DefineConstants>
     <WarningLevel>4</WarningLevel>
     <CodesignProvision>Daneel AdHoc</CodesignProvision>
     <CodesignKey>iPhone Distribution: Toggl OU (B227VTMZ94)</CodesignKey>
@@ -1224,6 +1223,11 @@
     <ImageAsset Include="Resources\Images.xcassets\stripes.imageset\stripes%403x.png">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-20x20.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-40x40.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-76x76.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-152x152.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-167x167.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

@@ -68,5 +68,11 @@ namespace Toggl.Shared.Extensions
                 return new DateTimeOffset(time.Year, time.Month, time.Day, time.Hour, minute, 0, time.Offset);
             }
         }
+
+        public static DateTimeOffset BeginningOfWeek(this DateTimeOffset time, BeginningOfWeek beginningOfWeek)
+        {
+            int diff = (7 + ((BeginningOfWeek)time.DayOfWeek - beginningOfWeek)) % 7;
+            return time.AddDays(-1 * diff).Date;
+        }
     }
 }

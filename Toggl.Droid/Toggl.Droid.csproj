@@ -40,8 +40,7 @@
     <DebugType>
     </DebugType>
     <OutputPath>..\bin</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
+    <DefineConstants>USE_APPCENTER</DefineConstants>
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>../giskard.keystore</AndroidSigningKeyStore>
     <AndroidSigningStorePass>{KEYSTORE_PASSWORD}</AndroidSigningStorePass>
@@ -61,7 +60,7 @@
     <AndroidSupportedAbis>armeabi-v7a;x86_64;x86;arm64-v8a</AndroidSupportedAbis>
     <DebugType>
     </DebugType>
-    <DefineConstants>USE_ANALYTICS;USE_PRODUCTION_API</DefineConstants>
+    <DefineConstants>USE_ANALYTICS;USE_PRODUCTION_API;USE_APPCENTER</DefineConstants>
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>../giskard.keystore</AndroidSigningKeyStore>
     <AndroidSigningStorePass>{KEYSTORE_PASSWORD}</AndroidSigningStorePass>

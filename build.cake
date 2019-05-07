@@ -164,8 +164,17 @@ private TemporaryFileTransformation GetIosAnalyticsServicesConfigurationTransfor
 private TemporaryFileTransformation GetIosAppDelegateTransformation()
 {
     const string path = "Toggl.iOS/Startup/AppDelegate.cs";
-    var appCenterId = EnvironmentVariable("TOGGL_APP_CENTER_ID_IOS");
     var adjustToken = EnvironmentVariable("TOGGL_ADJUST_APP_TOKEN");
+    string appCenterId = "";
+
+    if (target == "Build.Release.iOS.AdHoc")
+    {
+        appCenterId = EnvironmentVariable("TOGGL_APP_CENTER_ID_IOS_ADHOC");
+    }
+    else if (target == "Build.Release.iOS.AppStore")
+    {
+        appCenterId = EnvironmentVariable("TOGGL_APP_CENTER_ID_IOS");
+    }
 
     var filePath = GetFiles(path).Single();
     var file = TransformTextFile(filePath).ToString();
@@ -454,7 +463,16 @@ private TemporaryFileTransformation GetAndroidSplashScreenTransformation()
 private TemporaryFileTransformation GetAndroidTogglApplicationTransformation()
 {
     const string path = "Toggl.Droid/Startup/TogglApplication.cs";
-    var appCenterId = EnvironmentVariable("TOGGL_APP_CENTER_ID_DROID");
+    string appCenterId = "";
+
+    if (target == "Build.Release.Android.AdHoc")
+    {
+        appCenterId = EnvironmentVariable("TOGGL_APP_CENTER_ID_DROID_ADHOC");
+    }
+    else if (target == "Build.Release.Android.PlayStore")
+    {
+        appCenterId = EnvironmentVariable("TOGGL_APP_CENTER_ID_DROID");
+    }
 
     var filePath = GetFiles(path).Single();
     var file = TransformTextFile(filePath).ToString();

@@ -6,6 +6,7 @@ using Android.Animation;
 using Android.Graphics;
 using Android.Runtime;
 using Android.Support.Constraints;
+using Android.Support.V4.Content;
 using Android.Views;
 using Android.Widget;
 using Toggl.Core.Analytics;
@@ -71,8 +72,8 @@ namespace Toggl.Droid.ViewHolders
 
         protected override void InitializeViews()
         {
-            whiteColor = new Color(ItemView.Context.GetColor(Resource.Color.mainLogCellPaddingWhite));
-            grayColor = new Color(ItemView.Context.GetColor(Resource.Color.mainLogCellPaddingLightGray));
+            whiteColor = new Color(ContextCompat.GetColor(ItemView.Context, Resource.Color.mainLogCellPaddingWhite));
+            grayColor = new Color(ContextCompat.GetColor(ItemView.Context, Resource.Color.mainLogCellPaddingLightGray));
 
             groupItemBackground = ItemView.FindViewById<View>(MainLogGroupBackground);
             groupCountTextView = ItemView.FindViewById<TextView>(TimeEntriesLogCellGroupCount);
@@ -239,7 +240,6 @@ namespace Toggl.Droid.ViewHolders
         private void presentAsCollapsedGroupHeader(int timeEntriesCount)
         {
             groupExpansionButton.Enabled = true;
-            groupCountTextView.Context.GetColor(Resource.Color.defaultEditText);
             groupCountTextView.SetBackgroundResource(Resource.Drawable.GrayBorderRoundedRectangle);
             groupCountTextView.Enabled = true;
             groupCountTextView.Text = timeEntriesCount.ToString();
@@ -253,11 +253,11 @@ namespace Toggl.Droid.ViewHolders
         private void presentAsExpandedGroupHeader(int timeEntriesCount)
         {
             groupExpansionButton.Enabled = true;
-            groupCountTextView.Context.GetColor(Resource.Color.buttonBlue);
             groupCountTextView.SetBackgroundResource(Resource.Drawable.LightBlueRoundedRectangle);
             groupCountTextView.Enabled = true;
             groupCountTextView.Text = timeEntriesCount.ToString();
             groupCountTextView.Visibility = ViewStates.Visible;
+            groupCountTextView.SetTextColor(GroupingColor.Expanded.Text.ToNativeColor());
             groupItemBackground.Visibility = ViewStates.Gone;
             durationPadding.SetBackgroundColor(whiteColor);
             durationFadeGradient.SetBackgroundResource(Resource.Drawable.TransparentToWhiteGradient);

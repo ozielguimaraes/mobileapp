@@ -35,7 +35,7 @@ namespace Toggl.Core.UI.ViewModels
 
         private bool hasOpenedReports = false;
 
-        public IList<MvxViewModel> Tabs { get; private set; }
+        public IList<MvxViewModel> Tabs { get; }
 
         public MainTabBarViewModel(
             ITimeService timeService,
@@ -152,13 +152,13 @@ namespace Toggl.Core.UI.ViewModels
                 rxActionFactory,
                 permissionsService,
                 schedulerProvider);
+
+            Tabs = getViewModels().ToList();
         }
 
         public override async Task Initialize()
         {
             await base.Initialize();
-
-            Tabs = getViewModels().ToList();
 
             await Tabs
                 .Select(vm => vm.Initialize())

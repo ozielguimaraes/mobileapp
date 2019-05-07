@@ -23,6 +23,7 @@ using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using Toggl.Shared.Extensions.Reactive;
 using Toggl.Storage.Settings;
+using MvvmCross.ViewModels;
 
 namespace Toggl.Core.UI.ViewModels
 {
@@ -236,6 +237,25 @@ namespace Toggl.Core.UI.ViewModels
             DismissSyncErrorMessage = actionFactory.FromAction(dismissSyncErrorMessage);
             Save = actionFactory.FromAsync(save);
             Delete = actionFactory.FromAsync(delete);
+        }
+
+        protected override void ReloadFromBundle(IMvxBundle state)
+        {
+            base.ReloadFromBundle(state);
+
+            var ids = state.Data[nameof(TimeEntryIds)];
+
+            if (ids == null)
+                return;
+
+            TimeEntryIds = ids.Split(',').Select(long.Parse).ToArray();
+        }
+
+        protected override void SaveStateToBundle(IMvxBundle bundle)
+        {
+            base.SaveStateToBundle(bundle);
+
+            bundle.Data[nameof(TimeEntryIds)] = string.Join(",", TimeEntryIds);
         }
 
         public override void Prepare(long[] parameter)

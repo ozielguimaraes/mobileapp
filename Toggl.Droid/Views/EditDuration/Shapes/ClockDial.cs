@@ -12,6 +12,7 @@ namespace Toggl.Droid.Views.EditDuration.Shapes
         private readonly PointF dialCenter;
         private readonly float textRadius;
         private Rect textBounds = new Rect();
+        private PointF textCenter = new PointF();
 
         private readonly Paint paint = new Paint(PaintFlags.AntiAlias)
         {
@@ -39,7 +40,7 @@ namespace Toggl.Droid.Views.EditDuration.Shapes
         private void drawMinuteNumber(Canvas canvas, float number, float angle)
         {
             var minuteText = number.ToString().PadLeft(digitsCount, numberPaddingChar);
-            var textCenter = PointOnCircumference(dialCenter.ToPoint(), angle, textRadius).ToPointF();
+            textCenter.UpdateWith(PointOnCircumference(dialCenter.ToPoint(), angle, textRadius));
             paint.GetTextBounds(minuteText, 0, minuteText.Length, textBounds);
             var centeredTextX = textCenter.X - textBounds.Width() / 2f;
             var centeredTextY = textCenter.Y + textBounds.Height() / 2f;

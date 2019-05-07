@@ -15,7 +15,7 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.20.1</string>
+	<string>1.21</string>
 	<key>CFBundleVersion</key>
 	<string>IOS_BUNDLE_VERSION</string>
 	<key>MinimumOSVersion</key>

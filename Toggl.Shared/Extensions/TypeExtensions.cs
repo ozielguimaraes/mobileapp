@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 
 namespace Toggl.Shared.Extensions
 {
@@ -24,5 +25,8 @@ namespace Toggl.Shared.Extensions
 
         public static bool ImplementsOrDerivesFrom(this Type type, Type baseType)
             => baseType.IsAssignableFrom(type);
+
+        public static bool HasCustomAttribute<T>(this MemberInfo member) where T : Attribute
+           => member.GetCustomAttributes<T>().Any();
     }
 }

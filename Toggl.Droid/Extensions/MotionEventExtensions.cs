@@ -7,5 +7,10 @@ namespace Toggl.Droid.Extensions
     {
         public static PointF ToPointF(this MotionEvent motionEvent)
             => new PointF(motionEvent.GetX(), motionEvent.GetY());
+
+        public static void UpdateWith(this PointF updatingPoint, MotionEvent motionEvent)
+        {
+            updatingPoint.Set(motionEvent.GetX(), motionEvent.GetY());            
+        }
     }
 }

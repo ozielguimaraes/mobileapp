@@ -37,9 +37,10 @@ namespace Toggl.Droid.Views.EditDuration
         private int capIconSize;
         private int vibrationDurationInMilliseconds = 5;
         private int vibrationAmplitude = 5;
-        private PointF startTimePosition;
-        private PointF endTimePosition;
+        private PointF startTimePosition = new PointF();
+        private PointF endTimePosition = new PointF();
         private PointF center;
+        private PointF touchInteractionPointF = new PointF();
         private RectF bounds;
         private Vibrator hapticFeedbackProvider;
 
@@ -101,7 +102,7 @@ namespace Toggl.Droid.Views.EditDuration
                 if (center == null) return;
 
                 startTimeAngle = startTime.LocalDateTime.TimeOfDay.ToAngleOnTheDial().ToPositiveAngle();
-                startTimePosition = PointOnCircumference(center.ToPoint(), startTimeAngle, endPointsRadius).ToPointF();
+                startTimePosition.UpdateWith(PointOnCircumference(center.ToPoint(), startTimeAngle, endPointsRadius));
                 arc?.Update(startTimeAngle, endTimeAngle);
                 wheelHandleDotIndicator?.Update(startTimeAngle, endTimeAngle);
                 startTimeSubject.OnNext(startTime);
@@ -121,7 +122,7 @@ namespace Toggl.Droid.Views.EditDuration
                 if (center == null) return;
 
                 endTimeAngle = endTime.LocalDateTime.TimeOfDay.ToAngleOnTheDial().ToPositiveAngle();
-                endTimePosition = PointOnCircumference(center.ToPoint(), endTimeAngle, endPointsRadius).ToPointF();
+                endTimePosition.UpdateWith(PointOnCircumference(center.ToPoint(), endTimeAngle, endPointsRadius));
                 arc?.Update(startTimeAngle, endTimeAngle);
                 wheelHandleDotIndicator?.Update(startTimeAngle, endTimeAngle);
                 endTimeSubject.OnNext(endTime);
@@ -194,9 +195,9 @@ namespace Toggl.Droid.Views.EditDuration
             endPointsRadius = radius - capWidth;
             wheelHandleDotIndicatorDistanceToCenter = radius - capWidth / 2f;
             startTimeAngle = startTime.LocalDateTime.TimeOfDay.ToAngleOnTheDial().ToPositiveAngle();
-            startTimePosition = PointOnCircumference(center.ToPoint(), startTimeAngle, endPointsRadius).ToPointF();
+            startTimePosition.UpdateWith(PointOnCircumference(center.ToPoint(), startTimeAngle, endPointsRadius));
             endTimeAngle = endTime.LocalDateTime.TimeOfDay.ToAngleOnTheDial().ToPositiveAngle();
-            endTimePosition = PointOnCircumference(center.ToPoint(), endTimeAngle, endPointsRadius).ToPointF();
+            endTimePosition.UpdateWith(PointOnCircumference(center.ToPoint(), endTimeAngle, endPointsRadius));
             setupDrawingDelegates();
             arc.Update(startTimeAngle, endTimeAngle);
             wheelHandleDotIndicator.Update(startTimeAngle, endTimeAngle);
@@ -254,19 +255,21 @@ namespace Toggl.Droid.Views.EditDuration
         }
 
         #region Touch interaction
-
+        
         public override bool OnTouchEvent(MotionEvent motionEvent)
         {
             switch (motionEvent.Action)
             {
                 case MotionEventActions.Down:
-                    touchesBegan(motionEvent.ToPointF());
+                    touchInteractionPointF.UpdateWith(motionEvent);
+                    touchesBegan(touchInteractionPointF);
                     return true;
                 case MotionEventActions.Up:
                     touchesEnded();
                     return true;
                 case MotionEventActions.Move:
-                    touchesMoved(motionEvent.ToPointF());
+                    touchInteractionPointF.UpdateWith(motionEvent);
+                    touchesMoved(touchInteractionPointF);
                     return true;
                 case MotionEventActions.Cancel:
                     touchesCancelled();

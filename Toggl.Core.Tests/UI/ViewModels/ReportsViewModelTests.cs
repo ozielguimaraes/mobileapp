@@ -310,6 +310,32 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 var currentDateRangeString = observer.Values().First();
                 currentDateRangeString.Should().BeNullOrEmpty();
             }
+
+            public sealed class WhenThisWeekShortcutIsSelected : ReportsViewModelTest
+            {
+                [Theory, LogIfTooSlow]
+                [InlineData(BeginningOfWeek.Monday)]
+                [InlineData(BeginningOfWeek.Tuesday)]
+                [InlineData(BeginningOfWeek.Wednesday)]
+                [InlineData(BeginningOfWeek.Thursday)]
+                [InlineData(BeginningOfWeek.Friday)]
+                [InlineData(BeginningOfWeek.Saturday)]
+                [InlineData(BeginningOfWeek.Sunday)]
+                public async Task EmitsThisWeekWhenCurrentWeekIsSelected(BeginningOfWeek beginningOfWeek)
+                {
+                    var user = new MockUser { BeginningOfWeek = beginningOfWeek };
+                    DataSource.User.Current.Returns(Observable.Return(user));
+                    var observer = TestScheduler.CreateObserver<string>();
+                    var now = DateTimeOffset.Now;
+                    TimeService.CurrentDateTime.Returns(now);
+                    ViewModel.CurrentDateRangeStringObservable.Subscribe(observer);
+                    await ViewModel.Initialize();
+                    ViewModel.CalendarViewModel.SelectPeriod(Core.Services.ReportPeriod.ThisWeek);
+
+                    TestScheduler.Start();
+                    observer.LastEmittedValue().Should().Be($"{Resources.ThisWeek} ▾");
+                }
+            }
         }
 
         public sealed class TheSegmentsProperty : ReportsViewModelTest

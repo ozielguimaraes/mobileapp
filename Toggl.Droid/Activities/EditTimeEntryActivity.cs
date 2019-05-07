@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 using Toggl.Core.UI.ViewModels;
@@ -33,26 +31,47 @@ namespace Toggl.Droid.Activities
     {
         private TagsAdapter tagsAdapter = new TagsAdapter(Resource.Layout.EditTimeEntryTagCell, StringViewHolder.Create);
 
-        public EditTimeEntryActivity()
-        {
-
-        }
-
-        public EditTimeEntryActivity(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
-        {
-
-        }
+        private int rehydrationCount = 0;
+        private IAnalyticsService analyticsService;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+
+            if (bundle != null)
+            {
+                rehydrationCount = bundle.GetInt(nameof(rehydrationCount));
+            }
+
             SetContentView(Resource.Layout.EditTimeEntryActivity);
             OverridePendingTransition(Resource.Animation.abc_slide_in_bottom, Resource.Animation.abc_fade_out);
 
             InitializeViews();
 
-            setupViews();
+            bool hasViewModel = ViewModel != null;
+            bool hasTimeEntries = hasViewModel && ViewModel.TimeEntryIds != null;
+            int timeEntriesCount = ViewModel?.TimeEntryIds?.Length ?? 0;
+
+            try
+            {
+                setupViews();
+            }
+            catch (Exception exception)
+            {
+                analyticsService = AndroidDependencyContainer.Instance.AnalyticsService;
+                analyticsService.Track(exception, $"{nameof(setupViews)} failed to execute.");
+                analyticsService.DebugEditViewInitialSetup.Track(hasViewModel, hasTimeEntries, timeEntriesCount, rehydrationCount);
+
+                throw;
+            }
+
             setupBindings();
+        }
+
+        protected override void OnSaveInstanceState(Bundle outState)
+        {
+            base.OnSaveInstanceState(outState);
+            outState.PutInt(nameof(rehydrationCount), rehydrationCount + 1);
         }
 
         protected override void OnResume()

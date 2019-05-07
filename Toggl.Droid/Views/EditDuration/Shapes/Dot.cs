@@ -14,7 +14,7 @@ namespace Toggl.Droid.Views.EditDuration.Shapes
         private readonly float distanceToPivot;
         private readonly float radius;
         private readonly Paint paint = new Paint(PaintFlags.AntiAlias);
-        private PointF position;
+        private PointF position = new PointF();
         private bool hidden;
 
         public Dot(Point pivotCenter, float distanceToPivot, float radius, Color color)
@@ -39,7 +39,7 @@ namespace Toggl.Droid.Views.EditDuration.Shapes
             var diffAngle = endAngle - startAngle + (endAngle < startAngle ? FullCircle : 0);
             var diffInDegrees = (float) Math.ToDegrees(diffAngle);
             hidden = diffInDegrees < visibilityThresholdInDegrees;
-            position = PointOnCircumference(pivotCenter, startAngle + diffAngle / 2f, distanceToPivot).ToPointF();
+            position.UpdateWith(PointOnCircumference(pivotCenter, startAngle + diffAngle / 2f, distanceToPivot));
         }
     }
 }

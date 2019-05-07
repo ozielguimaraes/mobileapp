@@ -42,6 +42,12 @@ about: A manual testing checklist that can be assigned to a release to track the
 - [ ] Continue an entry
 - [ ] Delete an entry
 
+## Right to left language at random (Arabic, Aramaic, Azeri, Dhivehi/Maldivian, Hebrew, Kurdish (Sorani), Persian/Farsi, Urdu) Though not strictly RTL this could also apply to Chinese, Korean, Japanese and some other languages.
+- [ ] Start a timer and enter a description (Is it appearing from the right direction)?
+- [ ] Start a timer and enter a description and create a project (Is it appearing from the right direction)?
+- [ ] Start a timer and enter a description and create a tag (Is it appearing from the right direction)?
+- [ ] Start a timer and enter a description and create a project and a tag (Is it appearing from the right direction)?
+
 ## Testing editing time entry
 - [ ] Change description
 - [ ] Change project
@@ -53,7 +59,7 @@ about: A manual testing checklist that can be assigned to a release to track the
 - [ ] Change end time with barrel/manual selection
 - [ ] Change start date
 - [ ] Change end date
-- [ ] Change duration
+- [ ] Change duration manually
 - [ ] Change date from main entry page
 - [ ] Discard changes to entry
 - [ ] Delete entry from edit view
@@ -61,6 +67,22 @@ about: A manual testing checklist that can be assigned to a release to track the
 - [ ] Create new project from edit view
 - [ ] Create new client from edit view
 - [ ] Create new tag from edit view
+
+## Grouped Time Entries
+- [ ] Make sure the `Group time entries` setting is propagated to the server
+- [ ] Check whether the main log respects the grouping setting
+- [ ] Check whether the group count is correct in both expanded and collapsed groups
+- [ ] Collapse and expand various groups (ones with and without descriptions, tags, or projects, etc.)
+- [ ] Tap to edit a group header
+- [ ] Tap to edit a TE in an expanded group
+- [ ] Swipe to delete a group
+- [ ] Test the undo feature when attempting to delete a group
+- [ ] Swipe to delete a TE from an expanded group
+- [ ] Test the undo feature when attempting to delete a lone entry
+- [ ] Edit a TE from a group and change something and check that it is no longer in the group
+- [ ] Edit a TE group
+- [ ] Delete a TE group from an Edit View
+- [ ] Check whether the group summary time on both main log and in Edit view is the same and correct
 
 ## Testing report screen
 - [ ] Custom range
@@ -107,15 +129,18 @@ about: A manual testing checklist that can be assigned to a release to track the
 - [ ] Submit feedback
 - [ ] About
 - [ ] Help
-- [ ] Is "Synced" displaying correctly?
 
 ## Testing Calendar Integration
 - [ ] Are calendar entries showing correctly?
 - [ ] Create an entry from a calendar entry
-- [ ] Adjust the start time
-- [ ] Adjust the end time
+- [ ] Edit the entry by adjusting the start time of the entry (is this reflected on the calendar page?)
+- [ ] Edit the entry by adjusting the end time (is this reflected on the calendar page?)
+- [ ] Adjust the time of the calendar entry from your calendar to earlier on the current day (is this reflected?)
+- [ ] Delete the calendar entry from your calendar (is this reflected?)
+- [ ] Move the calendar entry from your calendar to another day (is this reflected?)
 
 ## Testing Siri Integration
+- [ ] Enable Siri Integration
 - [ ] Start a time entry
 - [ ] Stop a time entry
 
@@ -145,12 +170,24 @@ about: A manual testing checklist that can be assigned to a release to track the
 
 ## Testing in different timezones
 
-- [ ] Check
+- [ ] Set timezone to US and start and stop an entry (does it show up correctly?)
+- [ ] Does it show up correctly on web?
+- [ ] Set timezone to JP and start and stop an entry (does it show up correctly?)
+- [ ] Does it show up correctly on web?
+- [ ] Set timezone to AU and start and stop an entry (does it show up correctly?)
+- [ ] Does it show up correctly on web?
+- [ ] Set timezone to EU and start and stop an entry (does it show up correctly?)
+- [ ] Does it show up correctly on web?
+- [ ] Set timezone to UK and start and stop an entry (does it show up correctly?)
+- [ ] Does it show up correctly on web?
 
 ## Testing onboarding
 
-- [ ] Check
+- [ ] Check that steps are being displayed correctly for first entry
+- [ ] Check that steps to edit first entry are being displayed correctly
+- [ ] Check that hint to swipe continue entry is shown
+- [ ] Check that hint to swipe delete is shown
 
 ## Test that the UI is appearing as intended and report any issues
 
-- [ ] Check
+- [ ] Check this after testing app if no UI errors/glitches have occurred
