@@ -245,9 +245,6 @@ namespace Toggl.Core.Analytics
         [AnalyticsEvent("Type", "Source", "ExceptionType", "StackTrace")]
         public IAnalyticsEvent<string, string, string, string> DebugScheduleError { get; protected set; }
 
-        [AnalyticsEvent("HasViewModel", "HasTimeEntries", "TimeEntriesCount", "RehydrationCount")]
-        public IAnalyticsEvent<bool, bool, int, int> DebugEditViewInitialSetup { get; protected set; }
-
         public void TrackAnonymized(Exception exception)
         {
             if (exception.IsAnonymized())

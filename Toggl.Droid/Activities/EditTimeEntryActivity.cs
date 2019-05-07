@@ -31,47 +31,15 @@ namespace Toggl.Droid.Activities
     {
         private TagsAdapter tagsAdapter = new TagsAdapter(Resource.Layout.EditTimeEntryTagCell, StringViewHolder.Create);
 
-        private int rehydrationCount = 0;
-        private IAnalyticsService analyticsService;
-
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-
-            if (bundle != null)
-            {
-                rehydrationCount = bundle.GetInt(nameof(rehydrationCount));
-            }
-
             SetContentView(Resource.Layout.EditTimeEntryActivity);
             OverridePendingTransition(Resource.Animation.abc_slide_in_bottom, Resource.Animation.abc_fade_out);
 
             InitializeViews();
-
-            bool hasViewModel = ViewModel != null;
-            bool hasTimeEntries = hasViewModel && ViewModel.TimeEntryIds != null;
-            int timeEntriesCount = ViewModel?.TimeEntryIds?.Length ?? 0;
-
-            try
-            {
-                setupViews();
-            }
-            catch (Exception exception)
-            {
-                analyticsService = AndroidDependencyContainer.Instance.AnalyticsService;
-                analyticsService.Track(exception, $"{nameof(setupViews)} failed to execute.");
-                analyticsService.DebugEditViewInitialSetup.Track(hasViewModel, hasTimeEntries, timeEntriesCount, rehydrationCount);
-
-                throw;
-            }
-
+            setupViews();
             setupBindings();
-        }
-
-        protected override void OnSaveInstanceState(Bundle outState)
-        {
-            base.OnSaveInstanceState(outState);
-            outState.PutInt(nameof(rehydrationCount), rehydrationCount + 1);
         }
 
         protected override void OnResume()
@@ -308,7 +276,7 @@ namespace Toggl.Droid.Activities
                 ViewModel.Save.Execute();
             }
         }
-        
+
         private ISpannable generateProjectTaskClientFormattedString(EditTimeEntryViewModel.ProjectClientTaskInfo projectClientTask)
             => TimeEntryExtensions.ToProjectTaskClient(
                     projectClientTask.HasProject,
