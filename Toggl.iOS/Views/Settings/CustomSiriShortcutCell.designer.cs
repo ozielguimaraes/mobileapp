@@ -9,8 +9,8 @@ using System.CodeDom.Compiler;
 
 namespace Toggl.iOS.Views.Settings
 {
-	[Register ("ExistingSiriShortcutCell")]
-	partial class ExistingSiriShortcutCell
+	[Register ("CustomSiriShortcutCell")]
+	partial class CustomSiriShortcutCell
 	{
 		[Outlet]
 		UIKit.UIImageView BillableIcon { get; set; }

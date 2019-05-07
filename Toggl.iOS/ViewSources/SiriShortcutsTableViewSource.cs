@@ -16,16 +16,16 @@ namespace Toggl.iOS.ViewSources
         public SiriShortcutsTableViewSource(UITableView tableView)
         {
             tableView.RegisterNibForCellReuse(SiriShortcutCell.Nib, SiriShortcutCell.Identifier);
-            tableView.RegisterNibForCellReuse(ExistingSiriShortcutCell.Nib, ExistingSiriShortcutCell.Identifier);
+            tableView.RegisterNibForCellReuse(CustomSiriShortcutCell.Nib, CustomSiriShortcutCell.Identifier);
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
             var model = ModelAt(indexPath);
 
-            var identifier = model.Identifier == null
-                ? SiriShortcutCell.Identifier
-                : ExistingSiriShortcutCell.Identifier;
+            var identifier = (model.Detail != null)
+                ? CustomSiriShortcutCell.Identifier
+                : SiriShortcutCell.Identifier;
 
             var cell = (BaseTableViewCell<SiriShortcut>)tableView.DequeueReusableCell(identifier, indexPath);
             cell.Item = model;
@@ -40,7 +40,7 @@ namespace Toggl.iOS.ViewSources
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
         {
             var model = ModelAt(indexPath);
-            return model.Identifier == null ? 44 : 64;
+            return (model.Detail != null) ? 64 : 44;
         }
     }
 }

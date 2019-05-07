@@ -27,6 +27,7 @@ namespace Toggl.Core.UI.Helper
         public static class Siri
         {
             public static readonly Color AddButton = lightishGreen;
+            public static readonly Color InvocationPhrase = brownishGrey;
         }
 
         public static class Onboarding

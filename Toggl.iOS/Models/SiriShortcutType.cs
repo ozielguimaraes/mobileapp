@@ -22,6 +22,7 @@ namespace Toggl.iOS.Models
             if (intent is StartTimerIntent startTimerIntent)
             {
                 if (startTimerIntent.EntryDescription != null ||
+                    startTimerIntent.Billable != null ||
                     startTimerIntent.Tags != null ||
                     startTimerIntent.ProjectId != null)
                     return SiriShortcutType.CustomStart;
@@ -29,8 +30,15 @@ namespace Toggl.iOS.Models
                 return SiriShortcutType.Start;
             }
 
-            if (intent is StartTimerFromClipboardIntent)
+            if (intent is StartTimerFromClipboardIntent startFromClipboardTimerIntent)
+            {
+                if (startFromClipboardTimerIntent.Billable != null ||
+                    startFromClipboardTimerIntent.Tags != null ||
+                    startFromClipboardTimerIntent.ProjectId != null)
+                    return SiriShortcutType.CustomStart;
+
                 return SiriShortcutType.StartFromClipboard;
+            }
 
             if (intent is StopTimerIntent)
                 return SiriShortcutType.Stop;

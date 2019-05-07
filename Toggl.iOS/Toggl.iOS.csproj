@@ -1314,7 +1314,7 @@
     <InterfaceDefinition Include="Views\EntityCreation\CreateEntityViewCell.xib" />
     <InterfaceDefinition Include="Views\Settings\SiriShortcutCell.xib" />
     <InterfaceDefinition Include="ViewControllers\Settings\SiriShortcutsViewController.xib" />
-    <InterfaceDefinition Include="Views\Settings\ExistingSiriShortcutCell.xib" />
+    <InterfaceDefinition Include="Views\Settings\CustomSiriShortcutCell.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -1831,9 +1831,9 @@
     <Compile Include="ViewControllers\Settings\SiriShortcutsViewController.designer.cs">
       <DependentUpon>SiriShortcutsViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Settings\ExistingSiriShortcutCell.cs" />
-    <Compile Include="Views\Settings\ExistingSiriShortcutCell.designer.cs">
-      <DependentUpon>ExistingSiriShortcutCell.cs</DependentUpon>
+    <Compile Include="Views\Settings\CustomSiriShortcutCell.cs" />
+    <Compile Include="Views\Settings\CustomSiriShortcutCell.designer.cs">
+      <DependentUpon>CustomSiriShortcutCell.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

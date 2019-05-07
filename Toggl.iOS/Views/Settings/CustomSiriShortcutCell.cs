@@ -7,17 +7,17 @@ using UIKit;
 
 namespace Toggl.iOS.Views.Settings
 {
-    public partial class ExistingSiriShortcutCell : BaseTableViewCell<SiriShortcut>
+    public partial class CustomSiriShortcutCell : BaseTableViewCell<SiriShortcut>
     {
-        public static readonly string Identifier = nameof(ExistingSiriShortcutCell);
+        public static readonly string Identifier = nameof(CustomSiriShortcutCell);
         public static readonly UINib Nib;
 
-        static ExistingSiriShortcutCell()
+        static CustomSiriShortcutCell()
         {
-            Nib = UINib.FromName("ExistingSiriShortcutCell", NSBundle.MainBundle);
+            Nib = UINib.FromName("CustomSiriShortcutCell", NSBundle.MainBundle);
         }
 
-        protected ExistingSiriShortcutCell(IntPtr handle) : base(handle)
+        protected CustomSiriShortcutCell(IntPtr handle) : base(handle)
         {
             // Note: this .ctor should not contain any initialization logic.
         }

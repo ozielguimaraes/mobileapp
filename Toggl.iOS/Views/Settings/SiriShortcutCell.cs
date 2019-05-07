@@ -29,8 +29,19 @@ namespace Toggl.iOS.Views.Settings
         protected override void UpdateView()
         {
             TitleLabel.Text = Item.Title;
-            DetailLabel.Text = "Add";
-            DetailLabel.TextColor = Colors.Siri.AddButton.ToNativeColor();
+
+            if (Item.InvocationPhrase == null)
+            {
+                DetailLabel.Text = "Add";
+                DetailLabel.TextColor = Colors.Siri.AddButton.ToNativeColor();
+                Accessory = UITableViewCellAccessory.None;
+            }
+            else
+            {
+                DetailLabel.Text = $"\"{Item.InvocationPhrase}\"";
+                DetailLabel.TextColor = Colors.Siri.InvocationPhrase.ToNativeColor();
+                Accessory = UITableViewCellAccessory.DisclosureIndicator;
+            }
         }
     }
 }

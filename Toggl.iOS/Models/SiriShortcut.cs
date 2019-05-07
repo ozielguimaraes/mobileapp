@@ -11,8 +11,8 @@ namespace Toggl.iOS.Models
         public string Detail { get; }
         public string InvocationPhrase { get; }
         public SiriShortcutType Type { get; }
-
         public string Identifier { get; }
+
         private INIntent Intent { get; }
 
         public SiriShortcut(INVoiceShortcut voiceShortcut)
@@ -48,6 +48,10 @@ namespace Toggl.iOS.Models
             new SiriShortcut(
                 "Continue last entry",
                 SiriShortcutType.Continue
+            ),
+            new SiriShortcut(
+                "Start empty from clipboard",
+                SiriShortcutType.StartFromClipboard
             ),
             new SiriShortcut(
                 "Start custom entry",
