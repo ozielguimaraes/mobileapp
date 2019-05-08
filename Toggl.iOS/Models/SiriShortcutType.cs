@@ -15,6 +15,31 @@ namespace Toggl.iOS.Models
         CustomReport
     }
 
+    static class SiriShortcutTypeExtensions
+    {
+        public static string Title(this SiriShortcutType shortcutType)
+        {
+            switch (shortcutType)
+            {
+                case SiriShortcutType.Start:
+                    return "Start timer";
+                case SiriShortcutType.StartFromClipboard:
+                    return "Start from clipboard";
+                case SiriShortcutType.Continue:
+                    return "Continue tracking";
+                case SiriShortcutType.Stop:
+                    return "Stop running entry";
+                case SiriShortcutType.CustomStart:
+                    return "Start timer with custom details";
+                case SiriShortcutType.ShowReport:
+                    return "Show report";
+                case SiriShortcutType.CustomReport:
+                    return "Show custom report";
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(shortcutType), shortcutType, null);
+            }
+        }
+    }
     static class INIntentExtensions
     {
         public static SiriShortcutType ShortcutType(this INIntent intent)
@@ -52,7 +77,7 @@ namespace Toggl.iOS.Models
             if (intent is ShowReportPeriodIntent)
                 return SiriShortcutType.CustomReport;
 
-            throw new ArgumentOutOfRangeException("intent");
+            throw new ArgumentOutOfRangeException(nameof(intent));
         }
     }
 }

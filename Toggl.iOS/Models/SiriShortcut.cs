@@ -21,15 +21,15 @@ namespace Toggl.iOS.Models
             InvocationPhrase = voiceShortcut.InvocationPhrase;
             Intent = voiceShortcut.Shortcut.Intent;
 
-            Title = Intent.SuggestedInvocationPhrase;
+            Title = Intent.ShortcutType().Title();
             Detail = Intent.IntentDescription;
 
             Type = Intent.ShortcutType();
         }
 
-        public SiriShortcut(string title, SiriShortcutType type)
+        public SiriShortcut(SiriShortcutType type)
         {
-            Title = title;
+            Title = type.Title();
             Detail = null;
             InvocationPhrase = null;
             Type = type;
@@ -38,23 +38,18 @@ namespace Toggl.iOS.Models
         public static SiriShortcut[] TimerShortcuts = new[]
         {
             new SiriShortcut(
-                "Start empty timer",
                 SiriShortcutType.Start
             ),
             new SiriShortcut(
-                "Stop running entry",
                 SiriShortcutType.Stop
             ),
             new SiriShortcut(
-                "Continue last entry",
                 SiriShortcutType.Continue
             ),
             new SiriShortcut(
-                "Start empty from clipboard",
                 SiriShortcutType.StartFromClipboard
             ),
             new SiriShortcut(
-                "Start custom entry",
                 SiriShortcutType.CustomStart
             )
         };
@@ -62,11 +57,9 @@ namespace Toggl.iOS.Models
         public static SiriShortcut[] ReportsShortcuts = new[]
         {
             new SiriShortcut(
-                "Show reports",
                 SiriShortcutType.ShowReport
             ),
             new SiriShortcut(
-                "Show custom report",
                 SiriShortcutType.CustomReport
             )
         };
