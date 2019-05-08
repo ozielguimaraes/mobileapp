@@ -21,6 +21,7 @@ namespace Toggl.Core.Tests.Mocks
             Language = entity.Language;
             ImageUrl = entity.ImageUrl;
             At = entity.At;
+            Timezone = entity.Timezone;
         }
 
         public string ApiToken { get; set; }
@@ -46,5 +47,7 @@ namespace Toggl.Core.Tests.Mocks
         public string LastSyncErrorMessage { get; set; }
 
         public bool IsDeleted { get; set; }
+
+        public string Timezone { get; set; }
     }
 }

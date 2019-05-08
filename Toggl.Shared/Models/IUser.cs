@@ -15,5 +15,7 @@
         string Language { get; }
 
         string ImageUrl { get; }
+
+        string Timezone { get; }
     }
 }

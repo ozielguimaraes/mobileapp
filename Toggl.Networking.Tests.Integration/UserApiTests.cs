@@ -94,6 +94,16 @@ namespace Toggl.Networking.Tests.Integration
                 var uriIsAbsolute = uri.IsAbsoluteUri;
                 uriIsAbsolute.Should().BeTrue();
             }
+
+            [Fact, LogTestInfo]
+            public async Task ReturnsValidTimezone()
+            {
+                var (togglApi, user) = await SetupTestUser();
+
+                var userFromApi = await CallEndpointWith(togglApi);
+
+                userFromApi.Timezone.Should().NotBeNullOrEmpty();
+            }
         }
 
         public sealed class TheResetPasswordMethod : EndpointTestBase

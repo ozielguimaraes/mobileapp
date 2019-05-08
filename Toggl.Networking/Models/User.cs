@@ -25,6 +25,8 @@ namespace Toggl.Networking.Models
 
         public string ImageUrl { get; set; }
 
+        public string Timezone { get; set; }
+
         public DateTimeOffset At { get; set; }
     }
 }

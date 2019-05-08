@@ -242,6 +242,7 @@ namespace Toggl.Core.Models
             SyncStatus = syncStatus;
             LastSyncErrorMessage = lastSyncErrorMessage;
             IsDeleted = isDeleted;
+            Timezone = entity.Timezone;
         }
 
         public static User Clean(IUser entity)

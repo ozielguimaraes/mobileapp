@@ -30,6 +30,7 @@ namespace Toggl.Core.Models
             public SyncStatus SyncStatus { get; private set; }
             public string LastSyncErrorMessage { get; private set; }
             public bool IsDeleted { get; private set; }
+            public string Timezone { get; private set; }
 
             public Builder(IDatabaseUser user)
             {
@@ -45,6 +46,7 @@ namespace Toggl.Core.Models
                 SyncStatus = user.SyncStatus;
                 LastSyncErrorMessage = user.LastSyncErrorMessage;
                 IsDeleted = user.IsDeleted;
+                Timezone = user.Timezone;
             }
 
             public Builder SetBeginningOfWeek(BeginningOfWeek beginningOfWeek)
@@ -107,6 +109,7 @@ namespace Toggl.Core.Models
             SyncStatus = builder.SyncStatus;
             LastSyncErrorMessage = builder.LastSyncErrorMessage;
             IsDeleted = builder.IsDeleted;
+            Timezone = builder.Timezone;
         }
     }
 

@@ -343,6 +343,7 @@ namespace Toggl.Storage.Realm
             BeginningOfWeek = entity.BeginningOfWeek;
             Language = entity.Language;
             ImageUrl = entity.ImageUrl;
+            Timezone = entity.Timezone;
         }
     }
 

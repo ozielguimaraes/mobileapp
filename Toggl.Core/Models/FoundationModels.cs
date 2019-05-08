@@ -209,6 +209,8 @@ namespace Toggl.Core.Models
         public string LastSyncErrorMessage { get; }
 
         public DateTimeOffset At { get; }
+
+        public string Timezone { get; }
     }
 
     internal partial class Workspace : IThreadSafeWorkspace

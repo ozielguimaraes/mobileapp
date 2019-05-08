@@ -39,5 +39,7 @@ namespace Toggl.Storage.Realm
         public string ImageUrl { get; set; }
 
         public string Language { get; set; }
+
+        public string Timezone { get; set; }
     }
 }

@@ -155,6 +155,7 @@ namespace Toggl.Networking.Models
             Language = entity.Language;
             ImageUrl = entity.ImageUrl;
             At = entity.At;
+            Timezone = entity.Timezone;
         }
     }
 

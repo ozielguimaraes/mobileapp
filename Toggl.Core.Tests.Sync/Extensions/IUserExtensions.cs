@@ -25,7 +25,8 @@ namespace Toggl.Core.Tests.Sync.Extensions
                 Email = email.ValueOr(user.Email),
                 Fullname = user.Fullname,
                 ImageUrl = user.ImageUrl,
-                Language = user.Language
+                Language = user.Language,
+                Timezone = user.Timezone
             };
 
         public static IThreadSafeUser ToSyncable(
@@ -48,7 +49,8 @@ namespace Toggl.Core.Tests.Sync.Extensions
                 Language = user.Language,
                 SyncStatus = syncStatus,
                 IsDeleted = isDeleted,
-                LastSyncErrorMessage = lastSyncErrorMessage
+                LastSyncErrorMessage = lastSyncErrorMessage,
+                Timezone = user.Timezone
             };
     }
 }

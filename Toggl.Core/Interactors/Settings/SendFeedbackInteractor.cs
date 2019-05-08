@@ -23,6 +23,8 @@ namespace Toggl.Core.Interactors.Settings
         public const string OperatingSystem = "Platform and OS version";
         public const string LastSyncAttempt = "Time of last attempted sync";
         public const string DeviceTime = "Device's time when sending this feedback";
+        public const string DeviceTimeZone = "Device-based timezone";
+        public const string AccountTimeZone = "Toggl account based timezone";
         public const string LastSuccessfulSync = "Time of last successful full sync";
         public const string NumberOfUnsyncedTimeEntries = "Number of unsynced time entries";
         public const string NumberOfWorkspaces = "Number of workspaces available to the user";
@@ -71,6 +73,11 @@ namespace Toggl.Core.Interactors.Settings
             this.lastTimeUsageStorage = lastTimeUsageStorage;
         }
 
+        private IObservable<string> accountTimezone
+            => userDataSource
+                .Current
+                .Select(u => u.Timezone);
+
         private IObservable<int> workspacesCount
             => workspacesDataSource
                 .GetAll()
@@ -92,11 +99,13 @@ namespace Toggl.Core.Interactors.Settings
                 .Select(list => list.Count());
 
         public IObservable<Unit> Execute()
-            => workspacesCount.Zip(
-                    timeEntriesCount,
-                    unsyncedTimeEntriesCount,
-                    unsyncabeTimeEntriesCount,
-                    combineData)
+            => Observable.Zip(
+                workspacesCount,
+                timeEntriesCount,
+                unsyncedTimeEntriesCount,
+                unsyncabeTimeEntriesCount,
+                accountTimezone,
+                combineData)
                 .SelectMany(data =>
                     userDataSource.Get().SelectMany(user =>
                         feedbackApi.Send(user.Email, message, data)));
@@ -105,12 +114,15 @@ namespace Toggl.Core.Interactors.Settings
             int workspaces,
             int timeEntries,
             int unsyncedTimeEntries,
-            int unsyncableTimeEntriesCount)
+            int unsyncableTimeEntriesCount,
+            string accountTimezone)
             => new Dictionary<string, string>
             {
                 [PhoneModel] = platformInfo.PhoneModel,
                 [OperatingSystem] = platformInfo.OperatingSystem,
                 [AppNameAndVersion] = $"{platformInfo.Platform}/{platformInfo.Version}",
+                [DeviceTimeZone] = platformInfo.TimezoneIdentifier,
+                [AccountTimeZone] = accountTimezone,
                 [NumberOfWorkspaces] = workspaces.ToString(),
                 [NumberOfTimeEntries] = timeEntries.ToString(),
                 [NumberOfUnsyncedTimeEntries] = unsyncedTimeEntries.ToString(),
