@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using Foundation;
+using Intents;
+using IntentsUI;
 using Toggl.Core;
 using Toggl.Core.UI.Collections;
 using Toggl.Core.UI.ViewModels;
@@ -16,8 +21,10 @@ namespace Toggl.iOS.ViewControllers.Settings
 {
     using ShortcutSection = SectionModel<string, SiriShortcut>;
 
-    public sealed partial class SiriShortcutsViewController : ReactiveViewController<SiriShortcutsViewModel>
+    public sealed partial class SiriShortcutsViewController : ReactiveViewController<SiriShortcutsViewModel>, IINUIAddVoiceShortcutViewControllerDelegate
     {
+        private ISubject<Unit> refreshSubject = new Subject<Unit>();
+
         public SiriShortcutsViewController() : base(nameof(SiriShortcutsViewController))
         {
         }
@@ -38,17 +45,28 @@ namespace Toggl.iOS.ViewControllers.Settings
 
             TableView.Source = tableViewSource;
 
-            IosDependencyContainer.Instance.IntentDonationService.CurrentShortcuts
+            refreshSubject.StartWith(Unit.Default)
+                .SelectMany(_ => IosDependencyContainer.Instance.IntentDonationService.GetCurrentShortcuts())
                 .Select(toSections)
                 .ObserveOn(new NSRunloopScheduler())
                 .Subscribe(TableView.Rx().ReloadSections(tableViewSource))
                 .DisposedBy(DisposeBag);
 
-            /*
             tableViewSource.Rx().ModelSelected()
-                .Subscribe(ViewModel.SelectShortcut.Inputs)
+                .Subscribe(handleShortcutTap)
                 .DisposedBy(DisposeBag);
-            */
+        }
+
+        private void handleShortcutTap(SiriShortcut shortcut)
+        {
+            if (shortcut.Identifier == null)
+            {
+                var intent = IosDependencyContainer.Instance.IntentDonationService.CreateIntent(shortcut.Type);
+                var vc = new INUIAddVoiceShortcutViewController(new INShortcut(intent));
+                vc.ModalPresentationStyle = UIModalPresentationStyle.FormSheet;
+                vc.Delegate = this;
+                this.PresentViewController(vc, true, null);
+            }
         }
 
         private IEnumerable<ShortcutSection> toSections(IEnumerable<SiriShortcut> shortcuts)
@@ -95,6 +113,19 @@ namespace Toggl.iOS.ViewControllers.Settings
         private bool isReportsShortcut(SiriShortcut shortcut)
         {
             return shortcut.Type == SiriShortcutType.ShowReport || shortcut.Type == SiriShortcutType.CustomReport;
+        }
+
+        // IINUIAddVoiceShortcutViewControllerDelegate
+
+        public void DidFinish(INUIAddVoiceShortcutViewController controller, INVoiceShortcut voiceShortcut, NSError error)
+        {
+            refreshSubject.OnNext(Unit.Default);
+            controller.DismissViewController(true, null);
+        }
+
+        public void DidCancel(INUIAddVoiceShortcutViewController controller)
+        {
+            controller.DismissViewController(true, null);
         }
     }
 }

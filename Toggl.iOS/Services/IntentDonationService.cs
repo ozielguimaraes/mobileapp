@@ -21,22 +21,13 @@ namespace Toggl.iOS.Services
     public class IntentDonationService
     {
         private IAnalyticsService analyticsService;
-        private ISubject<Unit> trigger;
-
-        public IObservable<IEnumerable<SiriShortcut>> CurrentShortcuts { get; }
 
         public IntentDonationService(IAnalyticsService analyticsService)
         {
             this.analyticsService = analyticsService;
-
-            trigger = new Subject<Unit>();
-
-            CurrentShortcuts = trigger
-                .StartWith(Unit.Default)
-                .SelectMany(_ => currentShortcuts());
         }
 
-        private IObservable<IEnumerable<SiriShortcut>> currentShortcuts()
+        public IObservable<IEnumerable<SiriShortcut>> GetCurrentShortcuts()
         {
             return Observable.Create<IEnumerable<SiriShortcut>>(observer =>
                 {
