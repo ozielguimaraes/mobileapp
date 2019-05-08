@@ -13,10 +13,10 @@ namespace Toggl.iOS.Presentation
     {
         protected UIWindow Window { get; }
         protected AppDelegate AppDelegate { get; }
-        
+
         protected abstract HashSet<Type> AcceptedViewModels { get; }
         protected abstract void PresentOnMainThread<TInput, TOutput>(ViewModel<TInput, TOutput> viewModel, IView sourceView);
-        
+
         public IosPresenter(UIWindow window, AppDelegate appDelegate)
         {
             Window = window;
@@ -37,5 +37,13 @@ namespace Toggl.iOS.Presentation
 
             return tcs.Task;
         }
+
+        protected UIViewController FindPresentedViewController()
+            => findPresentedViewController(Window.RootViewController);
+
+        private UIViewController findPresentedViewController(UIViewController current)
+            => current.PresentedViewController == null || current.PresentedViewController.IsBeingDismissed
+                ? current
+                : findPresentedViewController(current.PresentedViewController);
     }
 }

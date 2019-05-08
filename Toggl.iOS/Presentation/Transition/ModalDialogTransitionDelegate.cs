@@ -3,7 +3,7 @@ using UIKit;
 
 namespace Toggl.iOS.Presentation.Transition
 {
-    public class ModalTransitionDelegate : NSObject, IUIViewControllerTransitioningDelegate
+    public class ModalDialogTransitionDelegate : NSObject, IUIViewControllerTransitioningDelegate
     {
         [Export("presentationControllerForPresentedViewController:presentingViewController:sourceViewController:")]
         public UIPresentationController GetPresentationControllerForPresentedViewController(UIViewController presented, UIViewController presenting, UIViewController source)

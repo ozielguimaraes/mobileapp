@@ -1326,6 +1326,7 @@
     <Compile Include="Extensions\ViewControllerExtensions.cs" />
     <Compile Include="Helper\PermissionsHelper.cs" />
     <Compile Include="Presentation\IosPresenter.cs" />
+    <Compile Include="Presentation\ModalDialogPresenter.cs" />
     <Compile Include="Presentation\RootPresenter.cs" />
     <Compile Include="Services\PermissionsCheckerIos.cs" />
     <Compile Include="Services\CalendarServiceIos.cs" />

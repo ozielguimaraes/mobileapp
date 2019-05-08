@@ -41,7 +41,8 @@ namespace Toggl.iOS
             setupTabBar();
 
             var compositePresenter = new CompositePresenter(
-                new RootPresenter(Window, this)
+                new RootPresenter(Window, this),
+                new ModalDialogPresenter(Window, this)
             );
 
             IosDependencyContainer.EnsureInitialized(compositePresenter, environment, Platform.Daneel, version);
