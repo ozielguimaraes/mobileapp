@@ -13,10 +13,13 @@ namespace Toggl.iOS.Models
         public SiriShortcutType Type { get; }
         public string Identifier { get; }
 
+        public INVoiceShortcut VoiceShortcut { get; }
+
         private INIntent Intent { get; }
 
         public SiriShortcut(INVoiceShortcut voiceShortcut)
         {
+            VoiceShortcut = voiceShortcut;
             Identifier = voiceShortcut.Identifier.AsString();
             InvocationPhrase = voiceShortcut.InvocationPhrase;
             Intent = voiceShortcut.Shortcut.Intent;

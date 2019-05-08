@@ -21,7 +21,7 @@ namespace Toggl.iOS.ViewControllers.Settings
 {
     using ShortcutSection = SectionModel<string, SiriShortcut>;
 
-    public sealed partial class SiriShortcutsViewController : ReactiveViewController<SiriShortcutsViewModel>, IINUIAddVoiceShortcutViewControllerDelegate
+    public sealed partial class SiriShortcutsViewController : ReactiveViewController<SiriShortcutsViewModel>, IINUIAddVoiceShortcutViewControllerDelegate, IINUIEditVoiceShortcutViewControllerDelegate
     {
         private ISubject<Unit> refreshSubject = new Subject<Unit>();
 
@@ -65,7 +65,14 @@ namespace Toggl.iOS.ViewControllers.Settings
                 var vc = new INUIAddVoiceShortcutViewController(new INShortcut(intent));
                 vc.ModalPresentationStyle = UIModalPresentationStyle.FormSheet;
                 vc.Delegate = this;
-                this.PresentViewController(vc, true, null);
+                PresentViewController(vc, true, null);
+            }
+            else
+            {
+                var vc = new INUIEditVoiceShortcutViewController(shortcut.VoiceShortcut);
+                vc.ModalPresentationStyle = UIModalPresentationStyle.FormSheet;
+                vc.Delegate = this;
+                PresentViewController(vc, true, null);
             }
         }
 
@@ -124,6 +131,25 @@ namespace Toggl.iOS.ViewControllers.Settings
         }
 
         public void DidCancel(INUIAddVoiceShortcutViewController controller)
+        {
+            controller.DismissViewController(true, null);
+        }
+
+        // IINUIEditVoiceShortcutViewControllerDelegate
+
+        public void DidUpdate(INUIEditVoiceShortcutViewController controller, INVoiceShortcut voiceShortcut, NSError error)
+        {
+            refreshSubject.OnNext(Unit.Default);
+            controller.DismissViewController(true, null);
+        }
+
+        public void DidDelete(INUIEditVoiceShortcutViewController controller, NSUuid deletedVoiceShortcutIdentifier)
+        {
+            refreshSubject.OnNext(Unit.Default);
+            controller.DismissViewController(true, null);
+        }
+
+        public void DidCancel(INUIEditVoiceShortcutViewController controller)
         {
             controller.DismissViewController(true, null);
         }
