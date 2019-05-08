@@ -21,13 +21,6 @@ namespace Toggl.iOS.Services
     public class IntentDonationService
     {
         private IAnalyticsService analyticsService;
-
-        private INRelevanceProvider[] startTimerRelevanceProviders = {
-            new INDailyRoutineRelevanceProvider(INDailyRoutineSituation.Work),
-            new INDailyRoutineRelevanceProvider(INDailyRoutineSituation.Gym),
-            new INDailyRoutineRelevanceProvider(INDailyRoutineSituation.School)
-        };
-
         private ISubject<Unit> trigger;
 
         public IObservable<IEnumerable<SiriShortcut>> CurrentShortcuts { get; }
@@ -57,6 +50,40 @@ namespace Toggl.iOS.Services
 
                     return new CompositeDisposable { };
                 });
+        }
+
+        public INIntent CreateIntent(SiriShortcutType shortcutType)
+        {
+            switch (shortcutType)
+            {
+                case SiriShortcutType.Start:
+                    var startTimerIntent = new StartTimerIntent();
+                    startTimerIntent.SuggestedInvocationPhrase = Resources.StartTimerInvocationPhrase;
+                    return startTimerIntent;
+                case SiriShortcutType.StartFromClipboard:
+                    var startTimerWithClipboardIntent = new StartTimerFromClipboardIntent();
+                    return startTimerWithClipboardIntent;
+                case SiriShortcutType.Continue:
+                    var continueTimerIntent = new ContinueTimerIntent();
+                    continueTimerIntent.SuggestedInvocationPhrase = Resources.ContinueTimerInvocationPhrase;
+                    return continueTimerIntent;
+                case SiriShortcutType.Stop:
+                    var stopTimerIntent = new StopTimerIntent();
+                    stopTimerIntent.SuggestedInvocationPhrase = Resources.StopTimerInvocationPhrase;
+                    return stopTimerIntent;
+                case SiriShortcutType.ShowReport:
+                    var showReportIntent = new ShowReportIntent();
+                    showReportIntent.SuggestedInvocationPhrase = Resources.ShowReportsInvocationPhrase;
+                    return showReportIntent;
+                /*
+                case SiriShortcutType.CustomStart:
+                    break;
+                case SiriShortcutType.CustomReport:
+                    break;
+                */
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(shortcutType), shortcutType, null);
+            }
         }
 
         public void SetDefaultShortcutSuggestions()
@@ -215,39 +242,33 @@ namespace Toggl.iOS.Services
 
         private void setupDefaultShortcuts()
         {
-            var startTimerIntent = new StartTimerIntent();
-            startTimerIntent.SuggestedInvocationPhrase = Resources.StartTimerInvocationPhrase;
-            var startShortcut = new INShortcut(startTimerIntent);
-            var startRelevantShorcut = new INRelevantShortcut(startShortcut);
-            startRelevantShorcut.RelevanceProviders = startTimerRelevanceProviders;
+            INRelevanceProvider[] startTimerRelevanceProviders = {
+                new INDailyRoutineRelevanceProvider(INDailyRoutineSituation.Work),
+                new INDailyRoutineRelevanceProvider(INDailyRoutineSituation.Gym),
+                new INDailyRoutineRelevanceProvider(INDailyRoutineSituation.School)
+            };
 
-            var startTimerWithClipboardIntent = new StartTimerFromClipboardIntent();
-            var startTimerWithClipboardShortcut = new INShortcut(startTimerWithClipboardIntent);
-            var startTimerWithClipboardRelevantShorcut = new INRelevantShortcut(startTimerWithClipboardShortcut);
-            startTimerWithClipboardRelevantShorcut.RelevanceProviders = startTimerRelevanceProviders;
-
-            var stopTimerIntent = new StopTimerIntent();
-            stopTimerIntent.SuggestedInvocationPhrase = Resources.StopTimerInvocationPhrase;
-            var stopShortcut = new INShortcut(stopTimerIntent);
-            var stopRelevantShortcut = new INRelevantShortcut(stopShortcut);
-            stopRelevantShortcut.RelevanceProviders = new[]
-            {
+            INRelevanceProvider[] stopTimerRelevanceProviders = {
                 new INDailyRoutineRelevanceProvider(INDailyRoutineSituation.Home)
             };
 
-            var showReportIntent = new ShowReportIntent();
-            showReportIntent.SuggestedInvocationPhrase = Resources.ShowReportsInvocationPhrase;
-            var reportShortcut = new INShortcut(showReportIntent);
+            var startShortcut = new INShortcut(CreateIntent(SiriShortcutType.Start));
+            var startRelevantShorcut = new INRelevantShortcut(startShortcut);
+            startRelevantShorcut.RelevanceProviders = startTimerRelevanceProviders;
 
-            var continueTimerIntent = new ContinueTimerIntent
-            {
-                SuggestedInvocationPhrase = Resources.ContinueTimerInvocationPhrase
-            };
-            var continueTimerShortcut = new INShortcut(continueTimerIntent);
-            var continueTimerRelevantShortcut = new INRelevantShortcut(continueTimerShortcut)
-            {
-                RelevanceProviders = startTimerRelevanceProviders
-            };
+            var startTimerWithClipboardShortcut = new INShortcut(CreateIntent(SiriShortcutType.StartFromClipboard));
+            var startTimerWithClipboardRelevantShorcut = new INRelevantShortcut(startTimerWithClipboardShortcut);
+            startTimerWithClipboardRelevantShorcut.RelevanceProviders = startTimerRelevanceProviders;
+
+            var stopShortcut = new INShortcut(CreateIntent(SiriShortcutType.Stop));
+            var stopRelevantShortcut = new INRelevantShortcut(stopShortcut);
+            stopRelevantShortcut.RelevanceProviders = stopTimerRelevanceProviders;
+
+            var reportShortcut = new INShortcut(CreateIntent(SiriShortcutType.ShowReport));
+
+            var continueTimerShortcut = new INShortcut(CreateIntent(SiriShortcutType.Continue));
+            var continueTimerRelevantShortcut = new INRelevantShortcut(continueTimerShortcut);
+            continueTimerRelevantShortcut.RelevanceProviders = startTimerRelevanceProviders;
 
             var shortcuts = new[] { startShortcut, stopShortcut, reportShortcut, continueTimerShortcut, startTimerWithClipboardShortcut };
             INVoiceShortcutCenter.SharedCenter.SetShortcutSuggestions(shortcuts);
