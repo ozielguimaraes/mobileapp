@@ -1328,6 +1328,7 @@
     <Compile Include="Presentation\IosPresenter.cs" />
     <Compile Include="Presentation\NavigationPresenter.cs" />
     <Compile Include="Presentation\ModalDialogPresenter.cs" />
+    <Compile Include="Presentation\ModalCardPresenter.cs" />
     <Compile Include="Presentation\RootPresenter.cs" />
     <Compile Include="Services\PermissionsCheckerIos.cs" />
     <Compile Include="Services\CalendarServiceIos.cs" />

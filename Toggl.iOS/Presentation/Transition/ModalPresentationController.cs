@@ -14,7 +14,6 @@ namespace Toggl.iOS.Presentation.Transition
 {
     public sealed class ModalPresentationController : UIPresentationController
     {
-        private readonly Action onDismissedCallback;
         private readonly UIImpactFeedbackGenerator feedbackGenerator;
 
         private readonly nfloat backgroundAlpha = 0.8f;
@@ -66,14 +65,9 @@ namespace Toggl.iOS.Presentation.Transition
         public UIView AdditionalContentView { get; }
             = new UIView();
 
-        public ModalPresentationController(UIViewController presentedViewController,
-            UIViewController presentingViewController, Action onDismissedCallback)
-          : base(presentedViewController, presentingViewController)
+        public ModalPresentationController(UIViewController presentedViewController, UIViewController presentingViewController)
+            : base(presentedViewController, presentingViewController)
         {
-            Ensure.Argument.IsNotNull(onDismissedCallback, nameof(onDismissedCallback));
-
-            this.onDismissedCallback = onDismissedCallback;
-
             var recognizer = new UITapGestureRecognizer(() => dismiss());
             AdditionalContentView.AddGestureRecognizer(recognizer);
 
@@ -269,7 +263,7 @@ namespace Toggl.iOS.Presentation.Transition
             }
 
             PresentedViewController.DismissViewController(true, null);
-            onDismissedCallback();
+
             return true;
         }
 

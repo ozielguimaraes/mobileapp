@@ -43,7 +43,8 @@ namespace Toggl.iOS
             var compositePresenter = new CompositePresenter(
                 new RootPresenter(Window, this),
                 new NavigationPresenter(Window, this),
-                new ModalDialogPresenter(Window, this)
+                new ModalDialogPresenter(Window, this),
+                new ModalCardPresenter(Window, this)
             );
 
             IosDependencyContainer.EnsureInitialized(compositePresenter, environment, Platform.Daneel, version);

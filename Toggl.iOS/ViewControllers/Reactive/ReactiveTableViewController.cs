@@ -71,7 +71,7 @@ namespace Toggl.iOS.ViewControllers
         {
             if (!isDismissing)
             {
-                this.Dismiss();
+                UIApplication.SharedApplication.InvokeOnMainThread(this.Dismiss);
             }
             return Task.CompletedTask;
         }
