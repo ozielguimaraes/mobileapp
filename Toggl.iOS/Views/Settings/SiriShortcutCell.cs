@@ -34,13 +34,11 @@ namespace Toggl.iOS.Views.Settings
             {
                 DetailLabel.Text = "Add";
                 DetailLabel.TextColor = Colors.Siri.AddButton.ToNativeColor();
-                Accessory = UITableViewCellAccessory.None;
             }
             else
             {
                 DetailLabel.Text = $"\"{Item.InvocationPhrase}\"";
                 DetailLabel.TextColor = Colors.Siri.InvocationPhrase.ToNativeColor();
-                Accessory = UITableViewCellAccessory.DisclosureIndicator;
             }
         }
     }
