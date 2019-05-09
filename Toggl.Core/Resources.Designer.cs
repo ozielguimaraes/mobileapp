@@ -556,6 +556,12 @@ namespace Toggl.Core {
             }
         }
         
+        public static string SiriReportPeriodInstruction {
+            get {
+                return ResourceManager.GetString("SiriReportPeriodInstruction", resourceCulture);
+            }
+        }
+        
         public static string WorkingOnThis {
             get {
                 return ResourceManager.GetString("WorkingOnThis", resourceCulture);

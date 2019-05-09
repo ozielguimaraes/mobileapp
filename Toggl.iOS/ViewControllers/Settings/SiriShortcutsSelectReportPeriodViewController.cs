@@ -5,6 +5,7 @@ using IntentsUI;
 using Toggl.Core;
 using Toggl.Core.UI.Collections;
 using Toggl.Core.UI.Extensions;
+using Toggl.Core.UI.Helper;
 using Toggl.Core.UI.ViewModels.Selectable;
 using Toggl.Core.UI.ViewModels.Settings;
 using Toggl.iOS.Extensions;
@@ -68,13 +69,25 @@ namespace Toggl.iOS.ViewControllers.Settings
             var button = new INUIAddVoiceShortcutButton(INUIAddVoiceShortcutButtonStyle.Black);
             button.TranslatesAutoresizingMaskIntoConstraints = false;
 
-            View.AddSubview(button);
+            var descriptionLabel = new UILabel
+            {
+                Text = Resources.SiriReportPeriodInstruction,
+                Font = UIFont.SystemFontOfSize(12),
+                TextColor = Colors.Siri.InvocationPhrase.ToNativeColor()
+            };
+            descriptionLabel.TranslatesAutoresizingMaskIntoConstraints = false;
+
+            AddToSiriWrapperView.AddSubview(button);
+            AddToSiriWrapperView.AddSubview(descriptionLabel);
 
             NSLayoutConstraint.ActivateConstraints(new []
             {
-                button.CenterXAnchor.ConstraintEqualTo(View.CenterXAnchor),
-                button.BottomAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.BottomAnchor, 32)
+                button.CenterXAnchor.ConstraintEqualTo(AddToSiriWrapperView.CenterXAnchor),
+                button.BottomAnchor.ConstraintEqualTo(AddToSiriWrapperView.SafeAreaLayoutGuide.BottomAnchor, 32),
+                descriptionLabel.CenterXAnchor.ConstraintEqualTo(AddToSiriWrapperView.CenterXAnchor),
+                descriptionLabel.BottomAnchor.ConstraintEqualTo(button.TopAnchor, -16),
             });
+
             button.TouchUpInside += siriButtonHandler;
         }
 

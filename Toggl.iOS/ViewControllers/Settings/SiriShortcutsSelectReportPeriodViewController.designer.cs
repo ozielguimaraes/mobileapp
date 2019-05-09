@@ -13,6 +13,9 @@ namespace Toggl.iOS.ViewControllers.Settings
 	partial class SiriShortcutsSelectReportPeriodViewController
 	{
 		[Outlet]
+		UIKit.UIView AddToSiriWrapperView { get; set; }
+
+		[Outlet]
 		UIKit.UIButton BackButton { get; set; }
 
 		[Outlet]
@@ -23,19 +26,24 @@ namespace Toggl.iOS.ViewControllers.Settings
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (TableView != null) {
-				TableView.Dispose ();
-				TableView = null;
-			}
-
 			if (BackButton != null) {
 				BackButton.Dispose ();
 				BackButton = null;
 			}
 
+			if (TableView != null) {
+				TableView.Dispose ();
+				TableView = null;
+			}
+
 			if (TitleLabel != null) {
 				TitleLabel.Dispose ();
 				TitleLabel = null;
+			}
+
+			if (AddToSiriWrapperView != null) {
+				AddToSiriWrapperView.Dispose ();
+				AddToSiriWrapperView = null;
 			}
 		}
 	}

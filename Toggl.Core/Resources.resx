@@ -374,6 +374,9 @@ Start the timer and your most used time entries will appear here.</value>
   <data name="ReportPeriod" xml:space="preserve">
     <value>Report period</value>
   </data>
+  <data name="SiriReportPeriodInstruction" xml:space="preserve">
+    <value>Ask Siri to view a report for this period</value>
+  </data>
   <data name="WorkingOnThis" xml:space="preserve">
     <value>Working on this?</value>
   </data>

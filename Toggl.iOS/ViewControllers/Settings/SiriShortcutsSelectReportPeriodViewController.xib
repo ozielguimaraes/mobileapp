@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SiriShortcutsSelectReportPeriodViewController">
             <connections>
+                <outlet property="AddToSiriWrapperView" destination="q6Q-4s-yjB" id="RIX-X7-7hK"/>
                 <outlet property="BackButton" destination="2aj-SS-GD8" id="qpL-Dr-42X"/>
                 <outlet property="TableView" destination="xm0-Xq-yQC" id="YxE-S1-6P3"/>
                 <outlet property="TitleLabel" destination="Fp1-wk-WtX" id="PcR-sm-ZUB"/>
@@ -23,7 +24,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xm0-Xq-yQC">
-                    <rect key="frame" x="0.0" y="52" width="375" height="615"/>
+                    <rect key="frame" x="0.0" y="52" width="375" height="465"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2aj-SS-GD8">
@@ -41,19 +42,29 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q6Q-4s-yjB">
+                    <rect key="frame" x="0.0" y="517" width="375" height="150"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="150" id="gzX-cn-gSr"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="2aj-SS-GD8" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="1N1-3N-bCV"/>
                 <constraint firstItem="Fp1-wk-WtX" firstAttribute="centerY" secondItem="2aj-SS-GD8" secondAttribute="centerY" id="4oY-ZJ-nID"/>
+                <constraint firstItem="q6Q-4s-yjB" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="7iY-jX-7No"/>
+                <constraint firstItem="q6Q-4s-yjB" firstAttribute="top" secondItem="xm0-Xq-yQC" secondAttribute="bottom" id="9Kl-eD-kOL"/>
                 <constraint firstItem="Fp1-wk-WtX" firstAttribute="centerX" secondItem="2" secondAttribute="centerX" id="DKr-OP-ggw"/>
                 <constraint firstItem="xm0-Xq-yQC" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="FVK-Qw-efg"/>
-                <constraint firstAttribute="bottom" secondItem="xm0-Xq-yQC" secondAttribute="bottom" id="HIW-BD-c22"/>
                 <constraint firstAttribute="trailing" secondItem="xm0-Xq-yQC" secondAttribute="trailing" id="c67-nF-vmg"/>
+                <constraint firstAttribute="bottom" secondItem="q6Q-4s-yjB" secondAttribute="bottom" id="hjR-vp-7Pt"/>
                 <constraint firstItem="xm0-Xq-yQC" firstAttribute="top" secondItem="2aj-SS-GD8" secondAttribute="bottom" constant="8" id="mYK-gY-qV6"/>
                 <constraint firstItem="2aj-SS-GD8" firstAttribute="top" secondItem="2" secondAttribute="top" id="oW5-fl-VhZ"/>
+                <constraint firstAttribute="trailing" secondItem="q6Q-4s-yjB" secondAttribute="trailing" id="wlo-yk-01N"/>
             </constraints>
-            <point key="canvasLocation" x="130.40000000000001" y="153.69458128078819"/>
+            <point key="canvasLocation" x="130.40000000000001" y="152.47376311844079"/>
         </view>
     </objects>
     <resources>
