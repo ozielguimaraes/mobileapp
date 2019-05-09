@@ -19,6 +19,15 @@ namespace Toggl.iOS.ViewControllers.Settings
 		UIKit.UIButton BackButton { get; set; }
 
 		[Outlet]
+		UIKit.UILabel SelectWorkspaceCellLabel { get; set; }
+
+		[Outlet]
+		UIKit.UILabel SelectWorkspaceNameLabel { get; set; }
+
+		[Outlet]
+		UIKit.UIView SelectWorkspaceView { get; set; }
+
+		[Outlet]
 		UIKit.UITableView TableView { get; set; }
 
 		[Outlet]
@@ -44,6 +53,21 @@ namespace Toggl.iOS.ViewControllers.Settings
 			if (AddToSiriWrapperView != null) {
 				AddToSiriWrapperView.Dispose ();
 				AddToSiriWrapperView = null;
+			}
+
+			if (SelectWorkspaceView != null) {
+				SelectWorkspaceView.Dispose ();
+				SelectWorkspaceView = null;
+			}
+
+			if (SelectWorkspaceNameLabel != null) {
+				SelectWorkspaceNameLabel.Dispose ();
+				SelectWorkspaceNameLabel = null;
+			}
+
+			if (SelectWorkspaceCellLabel != null) {
+				SelectWorkspaceCellLabel.Dispose ();
+				SelectWorkspaceCellLabel = null;
 			}
 		}
 	}

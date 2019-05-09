@@ -4,7 +4,6 @@ using System.Reactive.Linq;
 using IntentsUI;
 using Toggl.Core;
 using Toggl.Core.UI.Collections;
-using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.Helper;
 using Toggl.Core.UI.ViewModels.Selectable;
 using Toggl.Core.UI.ViewModels.Settings;
@@ -35,6 +34,7 @@ namespace Toggl.iOS.ViewControllers.Settings
             prepareSiriButton();
 
             TitleLabel.Text = Resources.ReportPeriod;
+            SelectWorkspaceCellLabel.Text = Resources.SelectWorkspace;
 
             TableView.RegisterNibForCellReuse(SiriShortcutReportPeriodCell.Nib, SiriShortcutReportPeriodCell.Identifier);
 
@@ -62,6 +62,14 @@ namespace Toggl.iOS.ViewControllers.Settings
             BackButton.Rx()
                 .BindAction(ViewModel.Close)
                 .DisposedBy(DisposeBag);
+
+            SelectWorkspaceView.Rx()
+                .BindAction(ViewModel.PickWorkspace)
+                .DisposedBy(DisposeBag);
+
+            ViewModel.WorkspaceName
+                .Subscribe(SelectWorkspaceNameLabel.Rx().Text())
+                .DisposedBy(DisposeBag);
         }
 
         private void prepareSiriButton()
@@ -83,7 +91,7 @@ namespace Toggl.iOS.ViewControllers.Settings
             NSLayoutConstraint.ActivateConstraints(new []
             {
                 button.CenterXAnchor.ConstraintEqualTo(AddToSiriWrapperView.CenterXAnchor),
-                button.BottomAnchor.ConstraintEqualTo(AddToSiriWrapperView.SafeAreaLayoutGuide.BottomAnchor, 32),
+                button.BottomAnchor.ConstraintEqualTo(AddToSiriWrapperView.BottomAnchor, 32),
                 descriptionLabel.CenterXAnchor.ConstraintEqualTo(AddToSiriWrapperView.CenterXAnchor),
                 descriptionLabel.BottomAnchor.ConstraintEqualTo(button.TopAnchor, -16),
             });
