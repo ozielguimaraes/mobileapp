@@ -53,6 +53,8 @@ Dependencies: Toggl.Shared, Toggl.Core
 This project contains shared view models for all our app. Only business logic related directly to specific UI components that cannot be handled easily in Toggl.Core is dealt with here. Otherwise the project is kept as light as possible.
 This allows us to use a lot of UI behaviour between the apps, and keep the platform specific code minimal.
 
+For an overview about how our app connects the cross platforms layer to the platform one, check [this doc](app-lifecycle/overview.md)
+
 ## :sunny: Toggl.iOS & :robot: Toggl.Droid
 
 Dependencies: Toggl.Core.UI
