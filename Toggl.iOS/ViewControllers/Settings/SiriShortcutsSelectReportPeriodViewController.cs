@@ -75,9 +75,13 @@ namespace Toggl.iOS.ViewControllers.Settings
                 button.CenterXAnchor.ConstraintEqualTo(View.CenterXAnchor),
                 button.BottomAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.BottomAnchor, 32)
             });
+            button.TouchUpInside += siriButtonHandler;
         }
 
-
+        private void siriButtonHandler(object sender, EventArgs args)
+        {
+            //TODO: Create custom shortcuts
+        }
     }
 }
 
