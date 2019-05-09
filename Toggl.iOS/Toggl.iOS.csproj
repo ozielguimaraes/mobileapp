@@ -1315,6 +1315,7 @@
     <InterfaceDefinition Include="Views\Settings\SiriShortcutCell.xib" />
     <InterfaceDefinition Include="ViewControllers\Settings\SiriShortcutsViewController.xib" />
     <InterfaceDefinition Include="Views\Settings\CustomSiriShortcutCell.xib" />
+    <InterfaceDefinition Include="ViewControllers\Settings\SiriShortcutsSelectReportPeriodViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -1834,6 +1835,10 @@
     <Compile Include="Views\Settings\CustomSiriShortcutCell.cs" />
     <Compile Include="Views\Settings\CustomSiriShortcutCell.designer.cs">
       <DependentUpon>CustomSiriShortcutCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewControllers\Settings\SiriShortcutsSelectReportPeriodViewController.cs" />
+    <Compile Include="ViewControllers\Settings\SiriShortcutsSelectReportPeriodViewController.designer.cs">
+      <DependentUpon>SiriShortcutsSelectReportPeriodViewController.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
