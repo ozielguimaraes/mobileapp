@@ -28,6 +28,7 @@ namespace Toggl.iOS.Views.Settings
             base.AwakeFromNib();
             TextLabel.Text = string.Empty;
             SelectedImageView.Hidden = true;
+            SelectionStyle = UITableViewCellSelectionStyle.None;
         }
 
         protected override void UpdateView()

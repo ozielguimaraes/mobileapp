@@ -408,7 +408,8 @@ namespace Toggl.Core.UI.Navigation
             if (viewModelType == typeof(SiriShortcutsSelectReportPeriodViewModel))
                 return new SiriShortcutsSelectReportPeriodViewModel(
                     dependencyContainer.NavigationService,
-                    dependencyContainer.RxActionFactory);
+                    dependencyContainer.RxActionFactory,
+                    dependencyContainer.SchedulerProvider);
 
             if (viewModelType == typeof(SiriShortcutsViewModel))
                 return new SiriShortcutsViewModel(

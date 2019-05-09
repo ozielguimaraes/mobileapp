@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Reactive;
+using System.Reactive.Linq;
+using IntentsUI;
 using Toggl.Core;
 using Toggl.Core.UI.Collections;
+using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.ViewModels.Selectable;
 using Toggl.Core.UI.ViewModels.Settings;
 using Toggl.iOS.Extensions;
@@ -28,6 +31,8 @@ namespace Toggl.iOS.ViewControllers.Settings
         {
             base.ViewDidLoad();
 
+            prepareSiriButton();
+
             TitleLabel.Text = Resources.ReportPeriod;
 
             TableView.RegisterNibForCellReuse(SiriShortcutReportPeriodCell.Nib, SiriShortcutReportPeriodCell.Identifier);
@@ -37,10 +42,19 @@ namespace Toggl.iOS.ViewControllers.Settings
             var source =
                 new CustomTableViewSource<SectionModel<Unit, SelectableReportPeriodViewModel>, Unit,
                     SelectableReportPeriodViewModel>(
-                    SiriShortcutReportPeriodCell.CellConfiguration(SiriShortcutReportPeriodCell.Identifier),
-                    ViewModel.ReportPeriods);
+                    SiriShortcutReportPeriodCell.CellConfiguration(SiriShortcutReportPeriodCell.Identifier)
+                    );
 
-            source.Rx().ModelSelected().Debug("SELECTED").Subscribe().DisposedBy(DisposeBag);
+            ViewModel.ReportPeriods
+                .Subscribe(TableView.Rx().ReloadItems(source))
+                .DisposedBy(DisposeBag);
+
+            source
+                .Rx()
+                .ModelSelected()
+                .Select(p => p.ReportPeriod)
+                .Subscribe(ViewModel.SelectReportPeriod.Accept)
+                .DisposedBy(DisposeBag);
 
             TableView.Source = source;
 
@@ -48,6 +62,22 @@ namespace Toggl.iOS.ViewControllers.Settings
                 .BindAction(ViewModel.Close)
                 .DisposedBy(DisposeBag);
         }
+
+        private void prepareSiriButton()
+        {
+            var button = new INUIAddVoiceShortcutButton(INUIAddVoiceShortcutButtonStyle.Black);
+            button.TranslatesAutoresizingMaskIntoConstraints = false;
+
+            View.AddSubview(button);
+
+            NSLayoutConstraint.ActivateConstraints(new []
+            {
+                button.CenterXAnchor.ConstraintEqualTo(View.CenterXAnchor),
+                button.BottomAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.BottomAnchor, 32)
+            });
+        }
+
+
     }
 }
 
