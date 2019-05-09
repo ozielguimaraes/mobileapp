@@ -544,6 +544,18 @@ namespace Toggl.Core {
             }
         }
         
+        public static string Unknown {
+            get {
+                return ResourceManager.GetString("Unknown", resourceCulture);
+            }
+        }
+        
+        public static string ReportPeriod {
+            get {
+                return ResourceManager.GetString("ReportPeriod", resourceCulture);
+            }
+        }
+        
         public static string WorkingOnThis {
             get {
                 return ResourceManager.GetString("WorkingOnThis", resourceCulture);

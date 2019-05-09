@@ -171,36 +171,31 @@ namespace Toggl.iOS.Services
             {
                 case ReportPeriod.Today:
                     intent.Period = ShowReportPeriodReportPeriod.Today;
-                    intent.SuggestedInvocationPhrase = $"Show {Resources.Today.ToLower()}'s time";
                     break;
                 case ReportPeriod.Yesterday:
                     intent.Period = ShowReportPeriodReportPeriod.Yesterday;
-                    intent.SuggestedInvocationPhrase = $"Show {Resources.Yesterday.ToLower()}'s time";
                     break;
                 case ReportPeriod.LastWeek:
                     intent.Period = ShowReportPeriodReportPeriod.LastWeek;
-                    intent.SuggestedInvocationPhrase = $"Show {Resources.LastWeek.ToLower()}'s time";
                     break;
                 case ReportPeriod.LastMonth:
                     intent.Period = ShowReportPeriodReportPeriod.LastMonth;
-                    intent.SuggestedInvocationPhrase = $"Show {Resources.LastMonth.ToLower()}'s time";
                     break;
                 case ReportPeriod.ThisMonth:
                     intent.Period = ShowReportPeriodReportPeriod.ThisMonth;
-                    intent.SuggestedInvocationPhrase = $"Show {Resources.ThisMonth.ToLower()}'s time";
                     break;
                 case ReportPeriod.ThisWeek:
                     intent.Period = ShowReportPeriodReportPeriod.ThisWeek;
-                    intent.SuggestedInvocationPhrase = $"Show {Resources.ThisWeek.ToLower()}'s time";
                     break;
                 case ReportPeriod.ThisYear:
                     intent.Period = ShowReportPeriodReportPeriod.ThisYear;
-                    intent.SuggestedInvocationPhrase = $"Show {Resources.ThisYear.ToLower()}'s time";
                     break;
                 case ReportPeriod.Unknown:
                     intent.Period = ShowReportPeriodReportPeriod.Unknown;
                     break;
             }
+
+            intent.SuggestedInvocationPhrase = $"Show {period.ToHumanReadableString().ToLower()}'s time";
 
             var interaction = new INInteraction(intent, null);
             interaction.DonateInteraction(trackError);
