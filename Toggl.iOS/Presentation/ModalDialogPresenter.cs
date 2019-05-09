@@ -11,7 +11,7 @@ using UIKit;
 
 namespace Toggl.iOS.Presentation
 {
-    public class ModalDialogPresenter : IosPresenter
+    public sealed class ModalDialogPresenter : IosPresenter
     {
         private readonly ModalDialogTransitionDelegate modalTransitionDelegate = new ModalDialogTransitionDelegate();
 
