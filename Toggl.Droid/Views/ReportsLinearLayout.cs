@@ -64,7 +64,7 @@ namespace Toggl.Droid.Views
 
         internal void ToggleCalendar(bool forceHide)
         {
-            animateCalendar(forceHide, false);
+            Post(() => animateCalendar(forceHide, false));
         }
 
         internal void RecalculateCalendarHeight()

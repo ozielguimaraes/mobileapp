@@ -42,6 +42,7 @@ namespace Toggl.iOS
 
             var compositePresenter = new CompositePresenter(
                 new RootPresenter(Window, this),
+                new NavigationPresenter(Window, this),
                 new ModalDialogPresenter(Window, this)
             );
 

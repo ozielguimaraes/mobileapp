@@ -627,7 +627,6 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 Interactor.Execute()
                     .ReturnsForAnyArgs(Observable.Empty<ProjectSummaryReport>(SchedulerProvider.TestScheduler));
                 await ViewModel.Initialize();
-                ViewModel.ViewAppeared(); // First call is skipped
 
                 for (int i = 0; i < numberOfAppearances; ++i)
                 {

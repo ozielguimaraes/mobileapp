@@ -141,11 +141,5 @@ namespace Toggl.Droid.Activities
 
             activeFragment = mainFragment;
         }
-
-        internal void ToggleReportsCalendarState(bool forceHide)
-        {
-            var reportsFragment = getCachedFragment(Resource.Id.MainTabReportsItem) as ReportsFragment;
-            reportsFragment.ToggleCalendarState(forceHide);
-        }
     }
 }

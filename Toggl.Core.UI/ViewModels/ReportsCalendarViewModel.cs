@@ -169,23 +169,19 @@ namespace Toggl.Core.UI.ViewModels
         {
             base.ViewAppeared();
 
-            if (!viewAppearedOnce)
-            {
-                viewAppearedOnce = true;
-                var initialShortcut = QuickSelectShortcuts.Single(shortcut => shortcut.Period == reportPeriod);
-                selectedDateRangeSubject.OnNext(initialShortcut.GetDateRange().WithSource(ReportsSource.Initial));
-                highlightedDateRangeSubject.OnNext(initialShortcut.GetDateRange().WithSource(ReportsSource.Initial));
-            }
+            if (viewAppearedOnce)
+                return;
+
+            viewAppearedOnce = true;
+            var initialShortcut = QuickSelectShortcuts.Single(shortcut => shortcut.Period == reportPeriod);
+            selectedDateRangeSubject.OnNext(initialShortcut.GetDateRange().WithSource(ReportsSource.Initial));
+            highlightedDateRangeSubject.OnNext(initialShortcut.GetDateRange().WithSource(ReportsSource.Initial));
         }
 
         public void Reload()
-        {
+        { 
             reloadSubject.OnNext(Unit.Default);
         }
-
-        public void OnToggleCalendar() => selectStartOfSelectionIfNeeded();
-
-        public void OnHideCalendar() => selectStartOfSelectionIfNeeded();
 
         public void SelectPeriod(ReportPeriod period)
         {
@@ -248,7 +244,7 @@ namespace Toggl.Core.UI.ViewModels
         private string dayHeaderFor(int index, BeginningOfWeek newBeginningOfWeek)
             => dayHeaders[(index + (int)newBeginningOfWeek + 7) % 7];
 
-        private void selectStartOfSelectionIfNeeded()
+        public void SelectStartOfSelectionIfNeeded()
         {
             if (startOfSelection == null) return;
 

@@ -15,6 +15,7 @@ namespace Toggl.iOS.Presentation
         protected AppDelegate AppDelegate { get; }
 
         protected abstract HashSet<Type> AcceptedViewModels { get; }
+
         protected abstract void PresentOnMainThread<TInput, TOutput>(ViewModel<TInput, TOutput> viewModel, IView sourceView);
 
         public IosPresenter(UIWindow window, AppDelegate appDelegate)

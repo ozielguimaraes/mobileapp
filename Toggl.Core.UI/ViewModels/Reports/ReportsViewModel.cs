@@ -45,8 +45,6 @@ namespace Toggl.Core.UI.ViewModels.Reports
         private readonly IIntentDonationService intentDonationService;
         private readonly IStopwatchProvider stopwatchProvider;
 
-        private readonly ReportsCalendarViewModel calendarViewModel;
-
         private readonly Subject<Unit> reportSubject = new Subject<Unit>();
         private readonly BehaviorSubject<bool> isLoading = new BehaviorSubject<bool>(true);
         private readonly BehaviorSubject<IThreadSafeWorkspace> workspaceSubject = new BehaviorSubject<IThreadSafeWorkspace>(null);
@@ -57,7 +55,6 @@ namespace Toggl.Core.UI.ViewModels.Reports
         private readonly ISubject<float?> billablePercentageSubject = new Subject<float?>();
         private readonly ISubject<IReadOnlyList<ChartSegment>> segmentsSubject = new Subject<IReadOnlyList<ChartSegment>>();
 
-        private bool didNavigateToCalendar;
         private DateTimeOffset startDate;
         private DateTimeOffset endDate;
         private int totalDays => (endDate - startDate).Days + 1;
@@ -85,7 +82,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
 
         public ReportsBarChartViewModel BarChartViewModel { get; }
 
-        public ReportsCalendarViewModel CalendarViewModel => calendarViewModel;
+        public ReportsCalendarViewModel CalendarViewModel { get; }
 
         public IObservable<IReadOnlyList<ChartSegment>> SegmentsObservable { get; private set; }
 
@@ -117,21 +114,21 @@ namespace Toggl.Core.UI.ViewModels.Reports
         {
             Ensure.Argument.IsNotNull(dataSource, nameof(dataSource));
             Ensure.Argument.IsNotNull(timeService, nameof(timeService));
+            Ensure.Argument.IsNotNull(rxActionFactory, nameof(rxActionFactory));
             Ensure.Argument.IsNotNull(analyticsService, nameof(analyticsService));
             Ensure.Argument.IsNotNull(interactorFactory, nameof(interactorFactory));
-            Ensure.Argument.IsNotNull(intentDonationService, nameof(intentDonationService));
             Ensure.Argument.IsNotNull(schedulerProvider, nameof(schedulerProvider));
             Ensure.Argument.IsNotNull(stopwatchProvider, nameof(stopwatchProvider));
-            Ensure.Argument.IsNotNull(rxActionFactory, nameof(rxActionFactory));
+            Ensure.Argument.IsNotNull(intentDonationService, nameof(intentDonationService));
 
+            this.dataSource = dataSource;
             this.timeService = timeService;
             this.analyticsService = analyticsService;
-            this.dataSource = dataSource;
             this.interactorFactory = interactorFactory;
-            this.intentDonationService = intentDonationService;
             this.stopwatchProvider = stopwatchProvider;
+            this.intentDonationService = intentDonationService;
 
-            calendarViewModel = new ReportsCalendarViewModel(timeService, dataSource, intentDonationService, rxActionFactory, navigationService);
+            CalendarViewModel = new ReportsCalendarViewModel(timeService, dataSource, intentDonationService, rxActionFactory, navigationService);
 
             var totalsObservable = reportSubject
                 .SelectMany(_ => interactorFactory.GetReportsTotals(userId, workspaceId, startDate, endDate).Execute())
@@ -180,7 +177,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
         {
             await base.Initialize();
 
-            calendarViewModel.SelectPeriod(ReportPeriod.ThisWeek);
+            CalendarViewModel.SelectPeriod(ReportPeriod.ThisWeek);
 
             WorkspacesObservable
                 .Subscribe(data => Workspaces = data)
@@ -195,7 +192,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
             workspaceId = workspace.Id;
             workspaceSubject.OnNext(workspace);
 
-            calendarViewModel.SelectedDateRangeObservable
+            CalendarViewModel.SelectedDateRangeObservable
                 .Subscribe(changeDateRange)
                 .DisposedBy(disposeBag);
 
@@ -210,7 +207,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
                 .Subscribe(onPreferencesChanged)
                 .DisposedBy(disposeBag);
 
-            await calendarViewModel.Initialize();
+            await CalendarViewModel.Initialize();
         }
 
         public override void ViewAppeared()
@@ -222,14 +219,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
             firstTimeOpenedFromMainTabBarStopwatch?.Stop();
             firstTimeOpenedFromMainTabBarStopwatch = null;
 
-            if (!didNavigateToCalendar)
-            {
-                // TODO: Reimplement this
-                //navigationService.Navigate(calendarViewModel);
-                didNavigateToCalendar = true;
-                intentDonationService.DonateShowReport();
-                return;
-            }
+            intentDonationService.DonateShowReport();
 
             reportSubject.OnNext(Unit.Default);
         }
@@ -239,20 +229,6 @@ namespace Toggl.Core.UI.ViewModels.Reports
             var navigationStopwatch = stopwatchProvider.Get(MeasuredOperation.OpenReportsFromGiskard);
             stopwatchProvider.Remove(MeasuredOperation.OpenReportsFromGiskard);
             navigationStopwatch?.Stop();
-        }
-
-        public void ToggleCalendar()
-        {
-            // TODO: Reimplement this
-            //navigationService.ChangePresentation(new ToggleReportsCalendarVisibilityHint());
-            calendarViewModel.OnToggleCalendar();
-        }
-
-        public void HideCalendar()
-        {
-            // TODO: Reimplement this
-            //navigationService.ChangePresentation(new ToggleReportsCalendarVisibilityHint(forceHide: true));
-            calendarViewModel.OnHideCalendar();
         }
 
         private bool isCurrentWeek()

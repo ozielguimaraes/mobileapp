@@ -355,6 +355,7 @@
     <Compile Include="Helper\IPermissionRequesterComponent.cs" />
     <Compile Include="Presentation\ActivityPresenter.cs" />
     <Compile Include="Presentation\AndroidPresenter.cs" />
+    <Compile Include="Presentation\DialogFragmentPresenter.cs" />
     <Compile Include="Startup\AndroidDependencyContainer.cs" />
     <Compile Include="Extensions\FloatingActionButtonExtensions.cs" />
     <Compile Include="Presentation\IScrollableToTop.cs" />

@@ -58,12 +58,12 @@ namespace Toggl.Droid.Fragments
                 .DisposedBy(DisposeBag);
 
             reportsRecyclerAdapter.SummaryCardClicks
-                .Subscribe(ViewModel.HideCalendar)
+                .Subscribe(hideCalendar)
                 .DisposedBy(DisposeBag);
 
             toolbarCurrentDateRangeText.Rx().Tap()
                 .Throttle(toggleCalendarThrottleDuration)
-                .Subscribe(ViewModel.ToggleCalendar)
+                .Subscribe(toggleCalendar)
                 .DisposedBy(DisposeBag);
 
             ViewModel.CurrentDateRangeStringObservable
@@ -71,6 +71,12 @@ namespace Toggl.Droid.Fragments
                 .DisposedBy(DisposeBag);
 
             return view;
+        }
+
+        public override void OnResume()
+        {
+            base.OnResume();
+            ViewModel.CalendarViewModel.ViewAppeared();
         }
 
         public void ScrollToTop()
@@ -85,16 +91,23 @@ namespace Toggl.Droid.Fragments
             reportsRecyclerView.SetAdapter(reportsRecyclerAdapter);
         }
 
-        internal void ToggleCalendarState(bool forceHide)
-        {
-            reportsMainContainer.ToggleCalendar(forceHide);
-        }
-
         private void setupToolbar()
         {
             var activity = Activity as AppCompatActivity;
             toolbar.Title = "";
             activity.SetSupportActionBar(toolbar);
+        }
+
+        private void toggleCalendar()
+        {
+            reportsMainContainer.ToggleCalendar(false);
+            ViewModel.CalendarViewModel.SelectStartOfSelectionIfNeeded();
+        }
+
+        private void hideCalendar()
+        {
+            reportsMainContainer.ToggleCalendar(true);
+            ViewModel.CalendarViewModel.SelectStartOfSelectionIfNeeded();
         }
     }
 }

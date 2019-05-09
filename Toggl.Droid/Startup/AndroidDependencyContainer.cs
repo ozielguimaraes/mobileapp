@@ -29,7 +29,7 @@ namespace Toggl.Droid
         private readonly Lazy<SettingsStorage> settingsStorage;
 
         public ActivityPresenter ActivityPresenter { get; } = new ActivityPresenter();
-
+        
         public new static AndroidDependencyContainer Instance { get; private set; }
 
         public static void EnsureInitialized(ApiEnvironment environment, Platform platform, string version)
@@ -112,7 +112,11 @@ namespace Toggl.Droid
             );
 
         protected override INavigationService CreateNavigationService()
-            => new NavigationService(new CompositePresenter(ActivityPresenter), new ViewModelLoader(this), AnalyticsService);
+            => new NavigationService(
+                new CompositePresenter(ActivityPresenter, new DialogFragmentPresenter()), 
+                new ViewModelLoader(this),
+                AnalyticsService
+            );
 
         protected override ILastTimeUsageStorage CreateLastTimeUsageStorage()
             => settingsStorage.Value;

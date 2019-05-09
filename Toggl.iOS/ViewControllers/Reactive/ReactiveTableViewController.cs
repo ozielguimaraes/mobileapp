@@ -11,6 +11,8 @@ namespace Toggl.iOS.ViewControllers
     public abstract partial class ReactiveTableViewController<TViewModel> : UITableViewController, IView
         where TViewModel : IViewModel
     {
+        private bool isDismissing;
+
         public CompositeDisposable DisposeBag { get; private set; } = new CompositeDisposable();
 
         public TViewModel ViewModel { get; set; }
@@ -51,9 +53,26 @@ namespace Toggl.iOS.ViewControllers
             ViewModel?.ViewDisappeared();
         }
 
+        public override void DidMoveToParentViewController(UIViewController parent)
+        {
+            base.DidMoveToParentViewController(parent);
+
+            // When this is removed from the parent controller (e.g: a pop action in a navigation controller)
+            // then the view is destroyed and the view model needs to be cancelled
+            if (parent == null)
+            {
+                isDismissing = true;
+                ViewModel?.ViewDestroyed();
+                ViewModel?.Cancel();
+            }
+        }
+
         public Task Close()
         {
-            this.Dismiss();
+            if (!isDismissing)
+            {
+                this.Dismiss();
+            }
             return Task.CompletedTask;
         }
 
