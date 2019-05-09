@@ -3,12 +3,12 @@ namespace Toggl.Core.Models
     public enum ReportPeriod
     {
         Unknown = 0,
-        LastMonth,
-        LastWeek,
-        Yesterday,
         Today,
+        Yesterday,
         ThisWeek,
+        LastWeek,
         ThisMonth,
+        LastMonth,
         ThisYear,
         LastYear
     }
