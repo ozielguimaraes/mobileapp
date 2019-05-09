@@ -464,7 +464,7 @@ namespace Toggl.Core.UI.ViewModels
 
             var selectedWorkspaceId =
                 await navigationService
-                    .Navigate<SelectWorkspaceViewModel, long, long>(defaultWorkspace.Id);
+                    .Navigate<SelectWorkspaceViewModel, SelectWorkspaceParameters, long>(new SelectWorkspaceParameters(Resources.SetDefaultWorkspace, defaultWorkspace.Id));
 
             await changeDefaultWorkspace(selectedWorkspaceId);
         }
