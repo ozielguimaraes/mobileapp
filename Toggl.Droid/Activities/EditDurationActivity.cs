@@ -15,6 +15,7 @@ using Toggl.Droid.Extensions;
 using Toggl.Droid.Extensions.Reactive;
 using Toggl.Droid.ViewHelpers;
 using Toggl.Droid.Views.EditDuration;
+using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using static Toggl.Core.UI.Helper.TemporalInconsistency;
 
@@ -42,6 +43,7 @@ namespace Toggl.Droid.Activities
         private DateTimeOffset minDateTime;
         private DateTimeOffset maxDateTime;
         private EditMode editMode = EditMode.None;
+        private BeginningOfWeek beginningOfWeek = BeginningOfWeek.Sunday;
         private bool canDismiss = true;
         private bool is24HoursFormat;
 
@@ -204,6 +206,10 @@ namespace Toggl.Droid.Activities
             wheelForeground.EndTimeObservable
                 .Subscribe(ViewModel.ChangeStopTime.Inputs)
                 .DisposedBy(DisposeBag);
+
+            ViewModel.BeginningOfWeek
+                .Subscribe(day => beginningOfWeek = day)
+                .DisposedBy(DisposeBag);
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -318,6 +324,10 @@ namespace Toggl.Droid.Activities
             {
                 var datePickerDialog = new DatePickerDialog(this, Resource.Style.WheelDialogStyle, new DatePickerListener(currentDate, activeEditionChangedSubject.OnNext),
                     currentDate.Year, currentDate.Month - 1, currentDate.Day);
+
+                // FirstDayOfWeek days start with sunday at 1 and finish with saturday at 7
+                var normalizedBeginningOfWeek = (int)beginningOfWeek + 1;
+                datePickerDialog.DatePicker.FirstDayOfWeek = normalizedBeginningOfWeek;
 
                 void updateDateBounds()
                 {

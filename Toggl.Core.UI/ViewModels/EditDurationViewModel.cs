@@ -15,6 +15,7 @@ using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using static Toggl.Core.Helper.Constants;
 using static Toggl.Core.UI.Helper.TemporalInconsistency;
+using static Toggl.Shared.BeginningOfWeek;
 
 namespace Toggl.Core.UI.ViewModels
 {
@@ -63,6 +64,8 @@ namespace Toggl.Core.UI.ViewModels
         public IObservable<string> DurationString { get; }
         public IObservable<TimeFormat> TimeFormat { get; }
         public IObservable<bool> IsRunning { get; }
+
+        public IObservable<BeginningOfWeek> BeginningOfWeek { get; }
 
         public IObservable<DateTimeOffset> MinimumDateTime { get; }
         public IObservable<DateTimeOffset> MaximumDateTime { get; }
@@ -129,6 +132,10 @@ namespace Toggl.Core.UI.ViewModels
             TimeFormat = timeFormat.AsDriver(schedulerProvider);
 
             IsRunning = isRunning.AsDriver(schedulerProvider);
+
+            BeginningOfWeek = dataSource.User.Current
+                .Select(user => user.BeginningOfWeek)
+                .AsDriver(Sunday, schedulerProvider);
 
             MinimumDateTime = minimumDateTime.AsDriver(schedulerProvider);
             MaximumDateTime = maximumDateTime.AsDriver(schedulerProvider);

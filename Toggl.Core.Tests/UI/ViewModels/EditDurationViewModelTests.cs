@@ -14,6 +14,10 @@ using Toggl.Core.Tests.Generators;
 using Toggl.Shared.Extensions;
 using Xunit;
 using Task = System.Threading.Tasks.Task;
+using Toggl.Core.Models.Interfaces;
+using Toggl.Shared;
+using Toggl.Core.DataSources.Interfaces;
+using static Toggl.Shared.BeginningOfWeek;
 
 namespace Toggl.Core.Tests.UI.ViewModels
 {
@@ -101,6 +105,43 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 TestScheduler.Start();
                 observer.LastEmittedValue().Hours.Should().Be(4);
+            }
+        }
+
+        public sealed class TheBeginningOfWeekProperty : EditDurationViewModelTest
+        {
+            [Theory]
+            [InlineData(Sunday)]
+            [InlineData(Monday)]
+            [InlineData(Tuesday)]
+            [InlineData(Wednesday)]
+            [InlineData(Thursday)]
+            [InlineData(Friday)]
+            [InlineData(Saturday)]
+            public void CorrespondsToSettings(BeginningOfWeek beginningOfWeek)
+            {
+                System.Diagnostics.Debug.WriteLine(beginningOfWeek);
+                var now = new DateTimeOffset(2019, 1, 1, 10, 12, 14, TimeSpan.Zero);
+                var start = now.AddHours(-2);
+                var parameter = DurationParameter.WithStartAndDuration(start, null);
+                TimeService.CurrentDateTime.Returns(now);
+
+                var user = Substitute.For<IThreadSafeUser>();
+                user.BeginningOfWeek.Returns(beginningOfWeek);
+                user.Id.Returns(123456);
+
+                DataSource.User.Current.Returns(Observable.Return(user));
+
+                var viewModel = CreateViewModel();
+
+                var observer = TestScheduler.CreateObserver<BeginningOfWeek>();
+                viewModel.BeginningOfWeek.Subscribe(observer);
+
+                viewModel.Prepare(new EditDurationParameters(parameter));
+                viewModel.Initialize().Wait();
+
+                TestScheduler.Start();
+                observer.LastEmittedValue().Should().Be(beginningOfWeek);
             }
         }
 
