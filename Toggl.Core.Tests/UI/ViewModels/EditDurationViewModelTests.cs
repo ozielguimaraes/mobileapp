@@ -125,15 +125,11 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 var start = now.AddHours(-2);
                 var parameter = DurationParameter.WithStartAndDuration(start, null);
                 TimeService.CurrentDateTime.Returns(now);
-
                 var user = Substitute.For<IThreadSafeUser>();
                 user.BeginningOfWeek.Returns(beginningOfWeek);
                 user.Id.Returns(123456);
-
                 DataSource.User.Current.Returns(Observable.Return(user));
-
                 var viewModel = CreateViewModel();
-
                 var observer = TestScheduler.CreateObserver<BeginningOfWeek>();
                 viewModel.BeginningOfWeek.Subscribe(observer);
 
