@@ -90,10 +90,10 @@ namespace Toggl.iOS.ViewControllers.Settings
 
             NSLayoutConstraint.ActivateConstraints(new []
             {
-                button.CenterXAnchor.ConstraintEqualTo(AddToSiriWrapperView.CenterXAnchor),
-                button.BottomAnchor.ConstraintEqualTo(AddToSiriWrapperView.BottomAnchor, 32),
                 descriptionLabel.CenterXAnchor.ConstraintEqualTo(AddToSiriWrapperView.CenterXAnchor),
-                descriptionLabel.BottomAnchor.ConstraintEqualTo(button.TopAnchor, -16),
+                descriptionLabel.TopAnchor.ConstraintEqualTo(AddToSiriWrapperView.TopAnchor, 16),
+                button.CenterXAnchor.ConstraintEqualTo(AddToSiriWrapperView.CenterXAnchor),
+                button.TopAnchor.ConstraintEqualTo(descriptionLabel.BottomAnchor, 16),
             });
 
             button.TouchUpInside += siriButtonHandler;
