@@ -69,10 +69,10 @@ namespace Toggl.iOS.ViewControllers.Settings
 
                 if (shortcut.Type == SiriShortcutType.CustomReport)
                 {
-                    // Navigate to custom report creation
+                    ViewModel.NavigateToCustomReportShortcut.Execute();
                     return;
                 }
-                
+
                 var intent = IosDependencyContainer.Instance.IntentDonationService.CreateIntent(shortcut.Type);
                 var vc = new INUIAddVoiceShortcutViewController(new INShortcut(intent));
                 vc.ModalPresentationStyle = UIModalPresentationStyle.FormSheet;

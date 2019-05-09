@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina5_9" orientation="portrait">
+    <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -11,27 +11,52 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SiriShortcutsSelectReportPeriodViewController">
             <connections>
+                <outlet property="BackButton" destination="2aj-SS-GD8" id="qpL-Dr-42X"/>
                 <outlet property="TableView" destination="xm0-Xq-yQC" id="YxE-S1-6P3"/>
+                <outlet property="TitleLabel" destination="Fp1-wk-WtX" id="PcR-sm-ZUB"/>
                 <outlet property="view" destination="2" id="RRd-Eg-VrN"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="2">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xm0-Xq-yQC">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xm0-Xq-yQC">
+                    <rect key="frame" x="0.0" y="52" width="375" height="615"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2aj-SS-GD8">
+                    <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="44" id="2D3-xZ-Xcc"/>
+                        <constraint firstAttribute="height" constant="44" id="flq-po-LNg"/>
+                    </constraints>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2" maxY="2"/>
+                    <state key="normal" image="icBack"/>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Report period" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fp1-wk-WtX">
+                    <rect key="frame" x="142" y="13.5" width="91" height="17"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="xm0-Xq-yQC" firstAttribute="top" secondItem="2" secondAttribute="top" id="Aek-PM-Nmq"/>
+                <constraint firstItem="2aj-SS-GD8" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="1N1-3N-bCV"/>
+                <constraint firstItem="Fp1-wk-WtX" firstAttribute="centerY" secondItem="2aj-SS-GD8" secondAttribute="centerY" id="4oY-ZJ-nID"/>
+                <constraint firstItem="Fp1-wk-WtX" firstAttribute="centerX" secondItem="2" secondAttribute="centerX" id="DKr-OP-ggw"/>
                 <constraint firstItem="xm0-Xq-yQC" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="FVK-Qw-efg"/>
                 <constraint firstAttribute="bottom" secondItem="xm0-Xq-yQC" secondAttribute="bottom" id="HIW-BD-c22"/>
                 <constraint firstAttribute="trailing" secondItem="xm0-Xq-yQC" secondAttribute="trailing" id="c67-nF-vmg"/>
+                <constraint firstItem="xm0-Xq-yQC" firstAttribute="top" secondItem="2aj-SS-GD8" secondAttribute="bottom" constant="8" id="mYK-gY-qV6"/>
+                <constraint firstItem="2aj-SS-GD8" firstAttribute="top" secondItem="2" secondAttribute="top" id="oW5-fl-VhZ"/>
             </constraints>
+            <point key="canvasLocation" x="130.40000000000001" y="153.69458128078819"/>
         </view>
     </objects>
+    <resources>
+        <image name="icBack" width="40" height="40"/>
+    </resources>
 </document>
