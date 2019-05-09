@@ -31,6 +31,8 @@ namespace Toggl.Core.Interactors.Settings
         public const string NumberOfUnsyncableTimeEntries = "Number of unsyncable time entries";
         public const string NumberOfTimeEntries = "Number of time entries in our database in total";
 
+        private const string unspecified = "[unspecified]";
+
         private readonly string message;
         private readonly ITimeService timeService;
         private readonly IFeedbackApi feedbackApi;
@@ -121,8 +123,8 @@ namespace Toggl.Core.Interactors.Settings
                 [PhoneModel] = platformInfo.PhoneModel,
                 [OperatingSystem] = platformInfo.OperatingSystem,
                 [AppNameAndVersion] = $"{platformInfo.Platform}/{platformInfo.Version}",
-                [DeviceTimeZone] = platformInfo.TimezoneIdentifier,
-                [AccountTimeZone] = accountTimezone,
+                [DeviceTimeZone] = platformInfo.TimezoneIdentifier ?? unspecified,
+                [AccountTimeZone] = accountTimezone ?? unspecified,
                 [NumberOfWorkspaces] = workspaces.ToString(),
                 [NumberOfTimeEntries] = timeEntries.ToString(),
                 [NumberOfUnsyncedTimeEntries] = unsyncedTimeEntries.ToString(),

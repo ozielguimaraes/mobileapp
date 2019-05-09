@@ -112,8 +112,7 @@ namespace Toggl.Storage.Realm
                     if (oldSchemaVersion < 8)
                     {
                         // RealmUser: Added new property Timezone
-                        // A migration is not required because the value will be filled in on next
-                        migration.NewRealm.All<RealmUser>().Do(user => user.Timezone = string.Empty);
+                        // A migration is not required because it's acceptable for the timezone to be unspecified (null)
                     }
                 }
             };
