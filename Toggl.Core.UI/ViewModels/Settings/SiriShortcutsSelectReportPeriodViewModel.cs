@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using Toggl.Core.DataSources;
 using Toggl.Core.Interactors;
@@ -27,6 +28,7 @@ namespace Toggl.Core.UI.ViewModels.Settings
         private readonly INavigationService navigationService;
         private readonly ISchedulerProvider schedulerProvider;
         private readonly IInteractorFactory interactorFactory;
+        private readonly BehaviorSubject<long?> workspace = new BehaviorSubject<long?>(null);
 
         public readonly BehaviorRelay<ReportPeriod> SelectReportPeriod = new BehaviorRelay<ReportPeriod>(ReportPeriod.Today);
         public IObservable<IEnumerable<SelectableReportPeriodViewModel>> ReportPeriods { get; private set; }
@@ -64,30 +66,36 @@ namespace Toggl.Core.UI.ViewModels.Settings
                 .Select(selectedPeriod => reportPeriods.Select(p => new SelectableReportPeriodViewModel(p, p == selectedPeriod)))
                 .AsDriver(new SelectableReportPeriodViewModel[0], schedulerProvider);
 
-            WorkspaceName = dataSource.User.Current
-                .DistinctUntilChanged(user => user.DefaultWorkspaceId)
-                .SelectMany(_ => interactorFactory.GetDefaultWorkspace()
-                    .TrackException<InvalidOperationException, IThreadSafeWorkspace>("SettingsViewModel.constructor")
-                    .Execute()
-                )
+            WorkspaceName = workspace
+                .Where(id => id != null)
+                .SelectMany(id => interactorFactory.GetWorkspaceById((long)id).Execute())
                 .Select(workspace => workspace.Name)
                 .AsDriver(schedulerProvider);
         }
 
+        public override async Task Initialize()
+        {
+            await base.Initialize();
+
+            var defaultWorkspace = await interactorFactory.GetDefaultWorkspace().Execute();
+            workspace.OnNext(defaultWorkspace.Id);
+        }
         private Task close() => navigationService.Close(this);
 
         private async Task pickWorkspace()
         {
+
             var defaultWorkspace = await interactorFactory.GetDefaultWorkspace()
-                .TrackException<InvalidOperationException, IThreadSafeWorkspace>("SettingsViewModel.PickDefaultWorkspace")
+                .TrackException<InvalidOperationException, IThreadSafeWorkspace>(
+                    "SiriShortcutsSelectReportPeriodViewModel.PickWorkspace")
                 .Execute();
 
-            var selectWorkspaceParams = new SelectWorkspaceParameters(Resources.SelectWorkspace, defaultWorkspace.Id);
+            var selectWorkspaceParams = new SelectWorkspaceParameters(Resources.SelectWorkspace, workspace.Value ?? defaultWorkspace.Id);
             var selectedWorkspaceId =
                 await navigationService
                     .Navigate<SelectWorkspaceViewModel, SelectWorkspaceParameters, long>(selectWorkspaceParams);
 
-            Console.WriteLine(selectedWorkspaceId);
+            workspace.OnNext(selectedWorkspaceId);
         }
     }
 }
